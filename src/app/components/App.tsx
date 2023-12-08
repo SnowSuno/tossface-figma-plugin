@@ -1,46 +1,34 @@
-import React from 'react';
-import logo from '../assets/logo.svg';
-import '../styles/ui.css';
+import React from "react";
+import { useEmojiInput, useToast } from "@/app/hooks";
+import { logo } from "@/app/assets";
 
 function App() {
-  const textbox = React.useRef<HTMLInputElement>(undefined);
+  const { openToast } = useToast();
+  const { input, emojis } = useEmojiInput(() =>
+    openToast("warning", "이모지만 입력할 수 있어요."),
+  );
 
-  const countRef = React.useCallback((element: HTMLInputElement) => {
-    if (element) element.value = '5';
-    textbox.current = element;
-  }, []);
-
-  const onCreate = () => {
-    const count = parseInt(textbox.current.value, 10);
-    parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*');
+  const createEmojis = () => {
+    parent.postMessage({ pluginMessage: { type: "create", emojis } }, "*");
+    openToast("success", "이모지를 삽입했어요.");
   };
-
-  const onCancel = () => {
-    parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
-  };
-
-  React.useEffect(() => {
-    // This is how we read messages sent from the plugin controller
-    window.onmessage = (event) => {
-      const { type, message } = event.data.pluginMessage;
-      if (type === 'create-rectangles') {
-        console.log(`Figma Says: ${message}`);
-      }
-    };
-  }, []);
 
   return (
-    <div>
-      <img src={logo} />
-      <h2>Rectangle Creator</h2>
+    <main>
+      <img src={logo} style={{ width: 108 }} />
+      <textarea
+        placeholder="😍😎🥲😤👻"
+        style={{ fontFamily: "Tossface" }}
+        {...input}
+      />
       <p>
-        Count: <input ref={countRef} />
+        <span>Control(⌃)+Command(⌘)+Space bar</span>를 눌러 이모지를
+        입력해보세요
       </p>
-      <button id="create" onClick={onCreate}>
-        Create
+      <button id="create" onClick={createEmojis} disabled={!emojis.length}>
+        삽입하기
       </button>
-      <button onClick={onCancel}>Cancel</button>
-    </div>
+    </main>
   );
 }
 
