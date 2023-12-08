@@ -1,0 +1,30 @@
+.toast {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  padding-bottom: 50px;
+}
+
+.toast > div {
+  background-color: rgba(126, 137, 150, 0.9);
+  color: var(--white);
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  padding-block: 14px;
+  padding-inline: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  backdrop-filter: blur(18px);
+}
+
+.toast > div > img {
+  width: 18px;
+  height: 18px;
+}
