@@ -1,7 +1,7 @@
 import React from "react";
 import { useOverlay } from "@toss/use-overlay";
 
-import { Toast, type ToastVariant } from "@/app/components/Toast";
+import { Toast, type ToastVariant } from "@/app/components";
 
 export const useToast = () => {
   const overlay = useOverlay();
