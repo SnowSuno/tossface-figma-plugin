@@ -1,4 +1,5 @@
 import type { Emoji } from "@/typings/emoji";
+import emojiRegex from "emoji-regex";
 
 const numberCharacters = {
   "0": "zero",
@@ -14,6 +15,9 @@ const numberCharacters = {
   "*": "asterisk",
   "#": "numbersign",
 } as const;
+
+export const containsNonEmoji = (string: string) =>
+  string.replaceAll(emojiRegex(), "").replaceAll(/\d|\*|#/g, "").length > 0;
 
 export const getEmojis = (string: string): string[] =>
   [...new Intl.Segmenter().segment(string)].map(({ segment }) => segment);

@@ -4,8 +4,8 @@ import { logo } from "@/app/assets";
 
 function App() {
   const { openToast } = useToast();
-  const { input, emojis } = useEmojiInput(() =>
-    openToast("warning", "이모지만 입력할 수 있어요."),
+  const { input, emojis } = useEmojiInput(message =>
+    openToast("warning", message),
   );
 
   const createEmojis = () => {
