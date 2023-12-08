@@ -1,8 +1,8 @@
 {
-  "name": "figma-plugin-react-template",
+  "name": "tossface-figma-plugin",
   "version": "1.0.0",
-  "description": "This plugin template uses Typescript. If you are familiar with Javascript, Typescript will look very familiar. In fact, valid Javascript code is already valid Typescript code.",
-  "license": "ISC",
+  "description": "An unofficial figma plugin for TossFace",
+  "license": "MIT",
   "scripts": {
     "prepare": "husky install",
     "build": "webpack --mode=production",
