@@ -11,8 +11,11 @@
     "noImplicitAny": false,
     "moduleResolution": "node",
     "typeRoots": ["./node_modules/@types", "./node_modules/@figma"],
+    "baseUrl": ".",
     "paths": {
-      "@tossface": ["./tossface/dist/svg"],
+      "@/*": ["./src/*"],
+      "@tossface/*": ["./tossface/dist/svg/*"]
     }
-  }
+  },
+  "include": ["src/**/*", "tossface/dist/svg/**/*"],
 }
