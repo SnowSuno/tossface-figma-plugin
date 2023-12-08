@@ -1,26 +1,28 @@
+import type { Emoji } from "@/typings/emoji";
+
 figma.showUI(__html__);
 
-figma.ui.onmessage = (msg) => {
-  if (msg.type === 'create-rectangles') {
-    const nodes = [];
+figma.ui.resize(320, 276);
 
-    for (let i = 0; i < msg.count; i++) {
-      const rect = figma.createRectangle();
-      rect.x = i * 150;
-      rect.fills = [{ type: 'SOLID', color: { r: 1, g: 0.5, b: 0 } }];
-      figma.currentPage.appendChild(rect);
-      nodes.push(rect);
-    }
+figma.ui.onmessage = msg => {
+  if (msg.type === "create") {
+    const emojis = msg.emojis as Emoji[];
+
+    const nodes = emojis.map((emoji, i) => {
+      const icon = figma.createNodeFromSvg(emoji.source);
+
+      icon.name = emoji.name;
+      icon.x = figma.viewport.center.x + 40 * i;
+      icon.y = figma.viewport.center.y;
+
+      return icon;
+    });
 
     figma.currentPage.selection = nodes;
     figma.viewport.scrollAndZoomIntoView(nodes);
-
-    // This is how figma responds back to the ui
-    figma.ui.postMessage({
-      type: 'create-rectangles',
-      message: `Created ${msg.count} Rectangles`,
-    });
   }
 
-  figma.closePlugin();
+  if (msg.type === "cancel") {
+    figma.closePlugin();
+  }
 };
