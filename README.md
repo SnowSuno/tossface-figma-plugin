@@ -10,14 +10,16 @@
 ## Usage
 
 Open this [Tossface plugin](https://www.figma.com/community/plugin/1315040601403942607) in your figma design file.
+<br/><br/>
+
 
 ## Features
 
-![preview](./docs/preview.png)
-- [x] ⚡️ One-click emoji insertion
-- [ ] 📦 Easy emoji search
+- [x] ⚡ One-click emoji insertion
+- [ ] 😍 Easy emoji search
 - [ ] 🌐 Multi language support (Currently only Korean)
 
+![preview](./docs/preview.png)
 
 ## Contributing
 
@@ -25,9 +27,10 @@ Open this [Tossface plugin](https://www.figma.com/community/plugin/1315040601403
 - Run `pnpm build:watch` to start webpack in watch mode.
 - Open `Figma` -> `Plugins` -> `Development` -> `Import plugin from manifest...` and choose `manifest.json` file from this repo.
 
-⭐ To change the UI of your plugin (the react code), start editing [App.tsx](./src/app/components/App.tsx).  
-⭐ To interact with the Figma API edit [controller.ts](./src/plugin/controller.ts).  
-⭐ Read more on the [Figma API Overview](https://www.figma.com/plugin-docs/api/api-overview/).
+😍 To change the UI of your plugin (the react code), start editing [App.tsx](./src/app/components/App.tsx).  
+😎 To interact with the Figma API edit [controller.ts](./src/plugin/controller.ts).  
+👻 Read more on the [Figma API Overview](https://www.figma.com/plugin-docs/api/api-overview/).
+<br/><br/>
 
 ## Licence
 
