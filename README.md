@@ -1,26 +1,38 @@
-# TossFace Figma Plugin
+![thumbnail](./docs/thumbnail.png)
 
-> Unofficial figma plugin for [TossFace](https://toss.im/tossface)
+<p align="center">
+  <br/>
+  Figma plugin for using <a href="https://toss.im/tossface">Tossface</a> emojis in your design
+  <br/><br/>
+</p>
 
 
-![62862431-71537f00-bd0e-11e9-85db-d97c0fb729a4](https://user-images.githubusercontent.com/16322616/62862692-46b5f600-bd0f-11e9-93b0-75955d1de8f3.png)
+## Usage
 
-This template contains the react example as shown on [Figma Docs](https://www.figma.com/plugin-docs/intro/), with some structural changes and extra tooling.
+Open this [Tossface plugin](https://www.figma.com/community/plugin/1315040601403942607) in your figma design file.
 
-## Quickstart
+## Features
 
-- Run `yarn` to install dependencies.
-- Run `yarn build:watch` to start webpack in watch mode.
+![preview](./docs/preview.png)
+- [x] ⚡️ One-click emoji insertion
+- [ ] 📦 Easy emoji search
+- [ ] 🌐 Multi language support (Currently only Korean)
+
+
+## Contributing
+
+- Run `pnpm install` to install dependencies.
+- Run `pnpm build:watch` to start webpack in watch mode.
 - Open `Figma` -> `Plugins` -> `Development` -> `Import plugin from manifest...` and choose `manifest.json` file from this repo.
 
 ⭐ To change the UI of your plugin (the react code), start editing [App.tsx](./src/app/components/App.tsx).  
 ⭐ To interact with the Figma API edit [controller.ts](./src/plugin/controller.ts).  
 ⭐ Read more on the [Figma API Overview](https://www.figma.com/plugin-docs/api/api-overview/).
 
-## Toolings
+## Licence
 
-This repo is using:
+> https://toss.im/tossface/copyright
 
-- React + Webpack
-- TypeScript
-- Prettier precommit hook
+All copyright of the emojis belong to Viva Republica (Toss).
+
+Be sure to read the [Tossface licence](https://toss.im/tossface) before using the assets in your design.
