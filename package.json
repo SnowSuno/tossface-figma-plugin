@@ -1,6 +1,6 @@
 {
   "name": "tossface-figma-plugin",
-  "version": "0.0.2",
+  "version": "0.1.1",
   "description": "An unofficial figma plugin for TossFace",
   "license": "MIT",
   "scripts": {
