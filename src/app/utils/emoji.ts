@@ -27,6 +27,7 @@ export const parseEmojiCode = (emoji: string) => {
 
   const unicode = [...emoji]
     .map(char => "u" + char.codePointAt(0)?.toString(16).toUpperCase() ?? "")
+    .filter(code => code !== "uFE0F")
     .join("_");
 
   return /(\w|_)*/.test(unicode) ? unicode : null;
