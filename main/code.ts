@@ -2,7 +2,7 @@ import type { Emoji } from "../src/typings/emoji";
 
 figma.showUI(__html__);
 
-figma.ui.resize(320, 276);
+figma.ui.resize(400, 500);
 
 figma.ui.onmessage = msg => {
   if (msg.type === "create") {
@@ -14,6 +14,12 @@ figma.ui.onmessage = msg => {
       icon.name = emoji.name;
       icon.x = figma.viewport.center.x + 40 * i;
       icon.y = figma.viewport.center.y;
+
+      icon.children.forEach(node => {
+        node.locked = true;
+      });
+
+      icon.constrainProportions = true;
 
       return icon;
     });

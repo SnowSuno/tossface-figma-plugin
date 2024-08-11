@@ -49,3 +49,22 @@ export const getSvgFromEmoji = (emoji: string): Emoji | null => {
     throw e;
   }
 };
+
+export const getSvgFromHexcode = (hexcode: string): Emoji | null => {
+  const svgName = hexcode
+    .split("-")
+    .filter(code => code !== "FE0F")
+    .map(code => `u${code}`)
+    .join("_");
+
+  try {
+    return {
+      name: svgName,
+      source: require(`@tossface/${svgName}.svg`),
+    };
+  } catch (e) {
+    if (e instanceof Error && e.message.startsWith("Cannot find module"))
+      return null;
+    throw e;
+  }
+};

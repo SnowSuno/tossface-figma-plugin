@@ -8,7 +8,8 @@
   "networkAccess": {
     "allowedDomains": [
       "https://cdn.jsdelivr.net",
-      "https://spoqa.github.io"
+      "https://spoqa.github.io",
+      "https://raw.githubusercontent.com"
     ]
   }
 }

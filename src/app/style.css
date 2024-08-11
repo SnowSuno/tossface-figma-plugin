@@ -12,7 +12,7 @@
 body {
   height: 100%;
   overflow: hidden;
-  background-color: var(--grey100);
+  background-color: var(--white);
 }
 
 :root {
@@ -55,6 +55,15 @@ p {
 
 p > span {
   color: var(--blue500);
+}
+
+input {
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  background-color: var(--grey100);
+  padding: 8px 12px;
+  font-size: 12px;
 }
 
 textarea {
@@ -114,4 +123,18 @@ button:active:not(:disabled) {
 button:disabled {
   background-color: var(--blue100);
   cursor: default;
+}
+
+.pressable {
+  transition: background 0.2s ease, color 0.1s ease, scale 0.1s ease;
+  cursor: pointer;
+}
+
+.pressable:hover {
+  background-color: var(--grey200);
+}
+
+.pressable:active:not(:disabled) {
+  scale: 0.9;
+  background-color: var(--grey300);
 }

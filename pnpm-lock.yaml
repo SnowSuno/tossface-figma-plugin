@@ -5,12 +5,21 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@tanstack/react-query':
+    specifier: ^5.51.23
+    version: 5.51.23(react@18.2.0)
   '@toss/use-overlay':
     specifier: ^1.3.8
     version: 1.3.8(react@18.2.0)
   emoji-regex:
     specifier: ^10.3.0
     version: 10.3.0
+  emojibase-data:
+    specifier: ^15.3.2
+    version: 15.3.2(emojibase@15.3.1)
+  es-toolkit:
+    specifier: ^1.15.1
+    version: 1.15.1
   framer-motion:
     specifier: ^11.3.24
     version: 11.3.24(react-dom@18.2.0)(react@18.2.0)
@@ -20,6 +29,9 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
+  react-intersection-observer:
+    specifier: ^9.13.0
+    version: 9.13.0(react-dom@18.2.0)(react@18.2.0)
 
 devDependencies:
   '@commitlint/types':
@@ -28,6 +40,9 @@ devDependencies:
   '@figma/plugin-typings':
     specifier: ^1.50.0
     version: 1.81.0
+  '@types/node':
+    specifier: ^22.2.0
+    version: 22.2.0
   '@types/react':
     specifier: ^18.0.17
     version: 18.2.42
@@ -47,10 +62,10 @@ devDependencies:
     specifier: ^0.23.0
     version: 0.23.0
   husky:
-    specifier: ^8.0.1
+    specifier: ^8.0.3
     version: 8.0.3
   lint-staged:
-    specifier: ^13.0.3
+    specifier: ^13.3.0
     version: 13.3.0
   prettier:
     specifier: ^2.7.1
@@ -60,7 +75,7 @@ devDependencies:
     version: 5.5.4
   vite:
     specifier: ^5.4.0
-    version: 5.4.0(@types/node@18.19.2)
+    version: 5.4.0(@types/node@22.2.0)
   vite-plugin-singlefile:
     specifier: ^2.0.2
     version: 2.0.2(rollup@4.20.0)(vite@5.4.0)
@@ -1066,6 +1081,19 @@ packages:
     dev: true
     optional: true
 
+  /@tanstack/query-core@5.51.21:
+    resolution: {integrity: sha512-POQxm42IUp6n89kKWF4IZi18v3fxQWFRolvBA6phNVmA8psdfB1MvDnGacCJdS+EOX12w/CyHM62z//rHmYmvw==}
+    dev: false
+
+  /@tanstack/react-query@5.51.23(react@18.2.0):
+    resolution: {integrity: sha512-CfJCfX45nnVIZjQBRYYtvVMIsGgWLKLYC4xcUiYEey671n1alvTZoCBaU9B85O8mF/tx9LPyrI04A6Bs2THv4A==}
+    peerDependencies:
+      react: ^18.0.0
+    dependencies:
+      '@tanstack/query-core': 5.51.21
+      react: 18.2.0
+    dev: false
+
   /@toss/use-overlay@1.3.8(react@18.2.0):
     resolution: {integrity: sha512-VdyAOaZsiDN5I+eo3oNZVOTqDU+S+WL+xg7Qln/ea073JO7l+UVnv4GWkRTCsmF1GB0OI4WBDDi0U7XEkLt0nQ==}
     peerDependencies:
@@ -1117,6 +1145,12 @@ packages:
       undici-types: 5.26.5
     dev: true
 
+  /@types/node@22.2.0:
+    resolution: {integrity: sha512-bm6EG6/pCpkxDf/0gDNDdtDILMOHgaQBVOJGdwsqClnxA3xL6jtMv76rLBc006RVMWbmaf0xbmom4Z/5o2nRkQ==}
+    dependencies:
+      undici-types: 6.13.0
+    dev: true
+
   /@types/normalize-package-data@2.4.4:
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
     dev: true
@@ -1154,7 +1188,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.24.7(@babel/core@7.25.2)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.2
-      vite: 5.4.0(@types/node@18.19.2)
+      vite: 5.4.0(@types/node@22.2.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1223,13 +1257,6 @@ packages:
   /arrify@1.0.1:
     resolution: {integrity: sha512-3CYzex9M9FGQjCGMGyi6/31c8GJbgb0qGyrx5HWxPd0aCwh4cB2YjMb2Xf9UuoogrMrlO9cTqnB5rI5GHZTcUA==}
     engines: {node: '>=0.10.0'}
-    dev: true
-
-  /braces@3.0.2:
-    resolution: {integrity: sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==}
-    engines: {node: '>=8'}
-    dependencies:
-      fill-range: 7.0.1
     dev: true
 
   /braces@3.0.3:
@@ -1505,11 +1532,27 @@ packages:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
     dev: true
 
+  /emojibase-data@15.3.2(emojibase@15.3.1):
+    resolution: {integrity: sha512-TpDyTDDTdqWIJixV5sTA6OQ0P0JfIIeK2tFRR3q56G9LK65ylAZ7z3KyBXokpvTTJ+mLUXQXbLNyVkjvnTLE+A==}
+    peerDependencies:
+      emojibase: '*'
+    dependencies:
+      emojibase: 15.3.1
+    dev: false
+
+  /emojibase@15.3.1:
+    resolution: {integrity: sha512-GNsjHnG2J3Ktg684Fs/vZR/6XpOSkZPMAv85EHrr6br2RN2cJNwdS4am/3YSK3y+/gOv2kmoK3GGdahXdMxg2g==}
+    dev: false
+
   /error-ex@1.3.2:
     resolution: {integrity: sha512-7dFHNmqeFSEt2ZBsCriorKnn3Z2pj+fd9kmI6QoWw4//DL+icEBfc0U7qJCisqrTsKTjw4fNFy2pW9OqStD84g==}
     dependencies:
       is-arrayish: 0.2.1
     dev: true
+
+  /es-toolkit@1.15.1:
+    resolution: {integrity: sha512-2rPCylgxxpgZ3jQLyvbm+B9dNAMdHv4S80iabK9njEWxDbObhAPJCQUpqHv8iaOZrfprl3UlWhfxZd7kKSQtbg==}
+    dev: false
 
   /esbuild@0.21.5:
     resolution: {integrity: sha512-mg3OPMV4hXywwpoDxu3Qda5xCKQi+vCTZq8S9J/EpkhB2HzKXq4SNFZE3+NK93JYxc8VMSep+lOUSC/RVKaBqw==}
@@ -1625,13 +1668,6 @@ packages:
 
   /fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
-    dev: true
-
-  /fill-range@7.0.1:
-    resolution: {integrity: sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==}
-    engines: {node: '>=8'}
-    dependencies:
-      to-regex-range: 5.0.1
     dev: true
 
   /fill-range@7.1.1:
@@ -2102,7 +2138,7 @@ packages:
     resolution: {integrity: sha512-DMy+ERcEW2q8Z2Po+WNXuw3c5YaUSFjAO5GsJqfEl7UjvtIuFKO6ZrKvcItdy98dwFI2N1tg3zNIdKaQT+aNdA==}
     engines: {node: '>=8.6'}
     dependencies:
-      braces: 3.0.2
+      braces: 3.0.3
       picomatch: 2.3.1
     dev: true
 
@@ -2325,6 +2361,19 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-intersection-observer@9.13.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-y0UvBfjDiXqC8h0EWccyaj4dVBWMxgEx0t5RGNzQsvkfvZwugnKwxpu70StY4ivzYuMajavwUDjH4LJyIki9Lw==}
+    peerDependencies:
+      react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react-refresh@0.14.2:
@@ -2697,6 +2746,10 @@ packages:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
     dev: true
 
+  /undici-types@6.13.0:
+    resolution: {integrity: sha512-xtFJHudx8S2DSoujjMd1WeWvn7KKWFRESZTMeL1RptAYERu29D6jphMjjY+vn96jvN3kVPDNxU/E13VTaXj6jg==}
+    dev: true
+
   /universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
@@ -2739,7 +2792,7 @@ packages:
     dependencies:
       micromatch: 4.0.7
       rollup: 4.20.0
-      vite: 5.4.0(@types/node@18.19.2)
+      vite: 5.4.0(@types/node@22.2.0)
     dev: true
 
   /vite-tsconfig-paths@5.0.1(typescript@5.5.4)(vite@5.4.0):
@@ -2753,13 +2806,13 @@ packages:
       debug: 4.3.4
       globrex: 0.1.2
       tsconfck: 3.1.1(typescript@5.5.4)
-      vite: 5.4.0(@types/node@18.19.2)
+      vite: 5.4.0(@types/node@22.2.0)
     transitivePeerDependencies:
       - supports-color
       - typescript
     dev: true
 
-  /vite@5.4.0(@types/node@18.19.2):
+  /vite@5.4.0(@types/node@22.2.0):
     resolution: {integrity: sha512-5xokfMX0PIiwCMCMb9ZJcMyh5wbBun0zUzKib+L65vAZ8GY9ePZMXxFrHbr/Kyll2+LSCY7xtERPpxkBDKngwg==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -2790,7 +2843,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 18.19.2
+      '@types/node': 22.2.0
       esbuild: 0.21.5
       postcss: 8.4.41
       rollup: 4.20.0
