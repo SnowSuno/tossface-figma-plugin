@@ -1,4 +1,4 @@
-import type { Emoji } from "@/typings/emoji";
+import type { Emoji } from "../src/typings/emoji";
 
 figma.showUI(__html__);
 
