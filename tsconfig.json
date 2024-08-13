@@ -12,9 +12,9 @@
     "noImplicitAny": false,
     "moduleResolution": "node",
     "typeRoots": ["./node_modules/@types"],
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./*"],
       "@tossface/*": ["./tossface/dist/svg/*"]
     }
   },

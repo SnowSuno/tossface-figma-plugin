@@ -5,24 +5,13 @@ import path from "node:path";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  plugins: [
-    react(),
-    tsconfigPaths(),
-    viteSingleFile({
-      useRecommendedBuildConfig: false,
-    }),
-  ],
+  plugins: [react(), tsconfigPaths(), viteSingleFile()],
   build: {
     outDir: path.resolve("dist"),
     rollupOptions: {
-      input: {
-        code: path.resolve("src/plugin/controller.ts"),
-        html: path.resolve("src/app/index.html"),
-      },
-      output: {
-        inlineDynamicImports: false,
-        manualChunks: undefined,
-      },
+      input: path.resolve("ui.html"),
     },
+    cssCodeSplit: false,
+    emptyOutDir: false,
   },
 });
