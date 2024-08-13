@@ -41,7 +41,7 @@ export const getSvgFromEmoji = (emoji: string): Emoji | null => {
   try {
     return {
       name: emoji,
-      source: require(`@tossface/${code}.svg`),
+      source: "", // TODO : 다음 업데이트에서 fetch로 변경될 예정
     };
   } catch (e) {
     if (e instanceof Error && e.message.startsWith("Cannot find module"))

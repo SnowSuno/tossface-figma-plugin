@@ -11,12 +11,12 @@
     "removeComments": true,
     "noImplicitAny": false,
     "moduleResolution": "node",
-    "typeRoots": ["./node_modules/@types", "./node_modules/@figma"],
-    "baseUrl": ".",
+    "typeRoots": ["./node_modules/@types"],
+    "baseUrl": "src",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./*"],
       "@tossface/*": ["./tossface/dist/svg/*"]
     }
   },
-  "include": ["src/**/*", "tossface/dist/svg/**/*"],
+  "include": ["src/**/*", "tossface/dist/svg/**/*"]
 }
