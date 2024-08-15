@@ -1,8 +1,0 @@
-{
-  "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "types": ["plugin-typings"],
-    "typeRoots": ["../node_modules/@figma"]
-  },
-  "include": ["./**/*"]
-}

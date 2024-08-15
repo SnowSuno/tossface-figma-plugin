@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.base.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "module": "esnext",
     "lib": ["es2022", "dom"],
@@ -7,9 +7,8 @@
     "typeRoots": ["./node_modules/@types"],
     "baseUrl": "src",
     "paths": {
-      "@/*": ["./*"],
-      "@tossface/*": ["./tossface/dist/svg/*"]
+      "@/*": ["./*"]
     }
   },
-  "include": ["src/**/*", "tossface/dist/svg/**/*"]
+  "include": ["src/**/*"]
 }

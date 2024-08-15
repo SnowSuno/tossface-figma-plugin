@@ -1,17 +1,6 @@
-interface Manifest {
-  name: string;
-  id: string;
-  api: string;
-  main: string;
-  ui?: string;
-  editorType: ("figma" | "figjam" | "dev")[];
-  networkAccess: {
-    allowedDomains?: string[];
-    devAllowedDomains?: string[];
-  };
-}
+import { defineManifest } from "./figma.schema";
 
-export const manifest: Manifest = {
+export default defineManifest({
   name: "Tossface",
   id: "1315040601403942607",
   api: "1.0.0",
@@ -25,4 +14,4 @@ export const manifest: Manifest = {
       "https://raw.githubusercontent.com",
     ],
   },
-};
+});

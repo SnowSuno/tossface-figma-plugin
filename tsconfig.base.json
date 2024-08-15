@@ -3,13 +3,13 @@
     "strict": true,
     "noEmit": true,
     "target": "es6",
-    "lib": ["espn6"],
+    "lib": ["es6"],
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true,
     "removeComments": true,
     "noImplicitAny": false,
-    "moduleResolution": "node"
+    "moduleResolution": "bundler"
   },
   "include": ["src/**/*", "tossface/dist/svg/**/*"]
 }

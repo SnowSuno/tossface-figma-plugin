@@ -1,7 +1,7 @@
 import React, { type PropsWithChildren, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { warning, success } from "@/app/assets";
+import { warning, success } from "@/assets";
 import "./Toast.css";
 
 const icons = {
