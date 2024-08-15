@@ -10,7 +10,7 @@ import base from "../../vite.config.base";
 export default defineConfig({
   plugins: [compileTime(), react(), tsconfigPaths(), viteSingleFile()],
   build: {
-    outDir: path.resolve("../../dist"),
+    outDir: base.outDir,
     rollupOptions: {
       input: path.resolve("ui.html"),
     },

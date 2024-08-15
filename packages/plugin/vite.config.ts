@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
       viteSingleFile(),
     ],
     build: {
-      outDir: path.resolve("../../dist"),
+      outDir: base.outDir,
       rollupOptions: {
         input: path.resolve("./src/code.ts"),
         output: {
