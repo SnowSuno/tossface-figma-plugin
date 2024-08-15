@@ -2,11 +2,7 @@ import type { ChangeEvent } from "react";
 import type { Emoji } from "@/typings/emoji";
 
 import { useState } from "react";
-import {
-  containsNonEmoji,
-  getEmojis,
-  getSvgFromEmoji,
-} from "@/app/utils/emoji";
+import { containsNonEmoji, getEmojis, getSvgFromEmoji } from "@/utils/emoji";
 
 export const useEmojiInput = (error?: (message: string) => void) => {
   const [value, setValue] = useState("");

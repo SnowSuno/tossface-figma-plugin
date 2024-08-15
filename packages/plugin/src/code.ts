@@ -1,16 +1,12 @@
-import type { Emoji } from "../src/typings/emoji";
+import { Message } from "@tossface-figma/common";
 
 figma.showUI(__html__);
 
-// figma.showUI(
-//   `<script>window.location.href = 'http://localhost:5173/ui'</script>`,
-// );
-
 figma.ui.resize(400, 480);
 
-figma.ui.onmessage = msg => {
+figma.ui.onmessage = (msg: Message) => {
   if (msg.type === "create") {
-    const emojis = msg.emojis as Emoji[];
+    const emojis = msg.emojis;
 
     const nodes = emojis.map((emoji, i) => {
       const icon = figma.createNodeFromSvg(emoji.source);
@@ -32,7 +28,7 @@ figma.ui.onmessage = msg => {
     figma.viewport.scrollAndZoomIntoView(nodes);
   }
 
-  if (msg.type === "cancel") {
+  if (msg.type === "exit") {
     figma.closePlugin();
   }
 };

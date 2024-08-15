@@ -1,0 +1,16 @@
+{
+  "name": "@tossface-figma/plugin",
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --mode=dev --watch",
+    "build": "vite build",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@tossface-figma/common": "workspace:*"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.50.0",
+    "vite-plugin-generate-file": "^0.2.0"
+  }
+}

@@ -4,20 +4,20 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { viteSingleFile } from "vite-plugin-singlefile";
 import generateFile from "vite-plugin-generate-file";
 
-import { manifest } from "./figma.manifest";
+import base from "../../vite.config.base";
 
 export default defineConfig(({ mode }) => {
-  let define: { __html__?: string } = {};
+  let injectGlobals: { __html__?: string } = {};
 
   if (mode === "dev") {
     // Use local vite dev server to serve UI to enable HMR
-    const devPort = 5173;
+    base.manifest.ui = undefined;
+    base.manifest.networkAccess.devAllowedDomains = [
+      `http://localhost:${base.port}`,
+    ];
 
-    manifest.ui = undefined;
-    manifest.networkAccess.devAllowedDomains = [`http://localhost:${devPort}`];
-
-    define.__html__ = JSON.stringify(
-      `<script>window.location.href = "http://localhost:${devPort}/ui"</script>`,
+    injectGlobals.__html__ = JSON.stringify(
+      `<script>window.location.href = "http://localhost:${base.port}/ui"</script>`,
     );
   }
 
@@ -26,21 +26,21 @@ export default defineConfig(({ mode }) => {
       generateFile({
         type: "json",
         output: "./manifest.json",
-        data: manifest,
+        data: base.manifest,
       }),
       tsconfigPaths(),
       viteSingleFile(),
     ],
     build: {
-      outDir: path.resolve("dist"),
+      outDir: path.resolve("../../dist"),
       rollupOptions: {
-        input: path.resolve("./main/code.ts"),
+        input: path.resolve("./src/code.ts"),
         output: {
           entryFileNames: "code.js",
         },
       },
       emptyOutDir: false,
     },
-    define,
+    define: injectGlobals,
   };
 });

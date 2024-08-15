@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useEmojiInput, useToast } from "@/app/hooks";
-import { logo } from "@/app/assets";
+import { useEmojiInput, useToast } from "@/hooks";
+import { logo } from "@/assets";
 import unicodeVersions from "emojibase-data/versions/unicode.json";
 import groups from "emojibase-data/meta/groups.json";
 import data from "emojibase-data/ko/compact.json";
@@ -8,6 +8,14 @@ import { groupBy } from "es-toolkit";
 import { getSvgFromEmoji, getSvgFromHexcode } from "./utils/emoji";
 import { useQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
+
+import { postMessage } from "./messages";
+
+// declare global {
+//   interface PluginWindow extends Window {
+//     postMessage(arg: { pluginMessage: string }): void;
+//   }
+// }
 
 const macroData = import.meta.compileTime<string>("./data.ts");
 
@@ -20,7 +28,7 @@ function App() {
   const [search, setSearch] = useState("");
 
   const createEmojis = () => {
-    parent.postMessage({ pluginMessage: { type: "create", emojis } }, "*");
+    postMessage({ type: "create", emojis });
     openToast("success", "이모지를 삽입했어요.");
   };
 
@@ -105,16 +113,10 @@ function App() {
             .then(data => data.text())
             .then(emoji => {
               console.log({ data });
-              parent.postMessage(
-                {
-                  pluginMessage: {
-                    type: "create",
-                    emojis: [{ name: "test", source: emoji }],
-                  },
-                  pluginId: "*",
-                },
-                "*",
-              );
+              postMessage({
+                type: "create",
+                emojis: [{ name: "test", source: emoji }],
+              });
             });
         }}
       >
