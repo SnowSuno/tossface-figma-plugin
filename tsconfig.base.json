@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true,
+    "target": "es6",
+    "lib": ["espn6"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowSyntheticDefaultImports": true,
+    "removeComments": true,
+    "noImplicitAny": false,
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*", "tossface/dist/svg/**/*"]
+}

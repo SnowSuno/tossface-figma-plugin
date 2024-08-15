@@ -2,7 +2,11 @@ import type { Emoji } from "../src/typings/emoji";
 
 figma.showUI(__html__);
 
-figma.ui.resize(400, 500);
+// figma.showUI(
+//   `<script>window.location.href = 'http://localhost:5173/ui'</script>`,
+// );
+
+figma.ui.resize(400, 480);
 
 figma.ui.onmessage = msg => {
   if (msg.type === "create") {

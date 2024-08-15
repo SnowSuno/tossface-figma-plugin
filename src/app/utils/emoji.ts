@@ -60,7 +60,7 @@ export const getSvgFromHexcode = (hexcode: string): Emoji | null => {
   try {
     return {
       name: svgName,
-      source: require(`@tossface/${svgName}.svg`),
+      source: "",
     };
   } catch (e) {
     if (e instanceof Error && e.message.startsWith("Cannot find module"))

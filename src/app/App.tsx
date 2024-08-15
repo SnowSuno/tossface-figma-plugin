@@ -9,6 +9,8 @@ import { getSvgFromEmoji, getSvgFromHexcode } from "./utils/emoji";
 import { useQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 
+const macroData = import.meta.compileTime<string>("./data.ts");
+
 function App() {
   const { openToast } = useToast();
   const { input, emojis } = useEmojiInput(message =>
@@ -40,6 +42,8 @@ function App() {
       emoji => emoji.group ?? "undefined",
     ),
   );
+
+  console.log(macroData.unicodeVersions[14]);
 
   return (
     <main>
@@ -107,13 +111,14 @@ function App() {
                     type: "create",
                     emojis: [{ name: "test", source: emoji }],
                   },
+                  pluginId: "*",
                 },
                 "*",
               );
             });
         }}
       >
-        test
+        테스트
       </button>
     </main>
   );
@@ -151,6 +156,7 @@ const EmojiIcon: React.FC<{ hexcode: string }> = ({ hexcode }) => {
           type: "create",
           emojis: [{ name: hexcode, source: data }],
         },
+        pluginId: "*",
       },
       "*",
     );

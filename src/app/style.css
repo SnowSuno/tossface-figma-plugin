@@ -108,7 +108,10 @@ button {
   font-weight: 500;
   font-size: 14px;
 
-  transition: background 0.2s ease, color 0.1s ease, scale 0.1s ease;
+  transition:
+    background 0.2s ease,
+    color 0.1s ease,
+    scale 0.1s ease;
   cursor: pointer;
 }
 
@@ -126,7 +129,10 @@ button:disabled {
 }
 
 .pressable {
-  transition: background 0.2s ease, color 0.1s ease, scale 0.1s ease;
+  transition:
+    background 0.2s ease,
+    color 0.1s ease,
+    scale 0.1s ease;
   cursor: pointer;
 }
 
