@@ -13,7 +13,8 @@
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,css,json}'",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "update:tossface": "git submodule update --remote"
   },
   "devDependencies": {
     "@commitlint/types": "^18.4.3",
