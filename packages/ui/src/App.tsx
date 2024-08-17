@@ -10,14 +10,15 @@ import { useQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 
 import { postMessage } from "./messages";
+import { emojiMeta } from "./emojis";
 
 // declare global {
 //   interface PluginWindow extends Window {
 //     postMessage(arg: { pluginMessage: string }): void;
 //   }
 // }
-
-const macroData = import.meta.compileTime<string>("./data.ts");
+//
+const supportedEmojis = new Set(emojiMeta.supportedEmojis);
 
 function App() {
   const { openToast } = useToast();
@@ -32,16 +33,10 @@ function App() {
     openToast("success", "이모지를 삽입했어요.");
   };
 
-  const v14Emojis = new Set(
-    Object.entries(unicodeVersions)
-      .filter(([version]) => Number(version) <= 14)
-      .flatMap(([_, emojis]) => emojis),
-  );
-
   const grouped = Object.entries(
     groupBy(
       data
-        .filter(emoji => v14Emojis.has(emoji.hexcode))
+        .filter(emoji => supportedEmojis.has(emoji.hexcode))
         .filter(emoji =>
           [emoji.label, ...(emoji.tags ?? [])].some(tag =>
             tag.includes(search),
@@ -50,8 +45,6 @@ function App() {
       emoji => emoji.group ?? "undefined",
     ),
   );
-
-  console.log(macroData.unicodeVersions[14]);
 
   return (
     <main>
@@ -73,7 +66,7 @@ function App() {
         }}
       >
         {grouped.map(([group, emojis]) => (
-          <>
+          <div key={group}>
             <div>{groups.groups[group]}</div>
             <div
               style={{
@@ -98,7 +91,7 @@ function App() {
                 );
               })}
             </div>
-          </>
+          </div>
         ))}
       </div>
       {/* <button id="create" onClick={createEmojis} disabled={!emojis.length}> */}
@@ -167,10 +160,17 @@ const EmojiIcon: React.FC<{ hexcode: string }> = ({ hexcode }) => {
     <span
       className="pressable"
       ref={ref}
-      style={{ width: size, height: size, padding: 4, borderRadius: 6 }}
+      style={{
+        width: size,
+        height: size,
+        padding: 4,
+        borderRadius: 6,
+      }}
       onClick={onInsert}
     >
-      {data ? <span dangerouslySetInnerHTML={{ __html: data }} /> : "?"}
+      {data && (
+        <span className="fade-in" dangerouslySetInnerHTML={{ __html: data }} />
+      )}
     </span>
   );
 };

@@ -15,7 +15,7 @@ body {
   background-color: var(--white);
 }
 
-:root {
+body {
   --grey50: #f9fafb;
   --grey100: #f2f4f6;
   --grey200: #e5e8eb;
@@ -27,6 +27,30 @@ body {
   --grey800: #333d4b;
   --grey900: #191f28;
   --white: #fff;
+  --blue50: #e8f3ff;
+  --blue100: #c9e2ff;
+  --blue200: #90c2ff;
+  --blue300: #64a8ff;
+  --blue400: #4593fc;
+  --blue500: #3182f6;
+  --blue600: #2272eb;
+  --blue700: #1b64da;
+  --blue800: #1957c2;
+  --blue900: #194aa6;
+}
+
+.figma-dark body {
+  --grey50: #f9fafb;
+  --grey100: #f2f4f6;
+  --grey200: #e5e8eb;
+  --grey300: #d1d6db;
+  --grey400: #b0b8c1;
+  --grey500: #8b95a1;
+  --grey600: #6b7684;
+  --grey700: #4e5968;
+  --grey800: #333d4b;
+  --grey900: #191f28;
+  --white: #000;
   --blue50: #e8f3ff;
   --blue100: #c9e2ff;
   --blue200: #90c2ff;
@@ -53,7 +77,7 @@ p {
   line-height: 1.4;
 }
 
-p > span {
+p>span {
   color: var(--blue500);
 }
 
@@ -143,4 +167,18 @@ button:disabled {
 .pressable:active:not(:disabled) {
   scale: 0.9;
   background-color: var(--grey300);
+}
+
+.fade-in {
+  animation: 0.2s ease fadein;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

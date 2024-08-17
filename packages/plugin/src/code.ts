@@ -1,6 +1,6 @@
 import { Message } from "@tossface-figma/common";
 
-figma.showUI(__html__);
+figma.showUI(__html__, { themeColors: true });
 
 figma.ui.resize(400, 480);
 
