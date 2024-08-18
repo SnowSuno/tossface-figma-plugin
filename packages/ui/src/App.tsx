@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import { useEmojiInput, useToast } from "@/hooks";
 import { logo } from "@/assets";
-import unicodeVersions from "emojibase-data/versions/unicode.json";
 import groups from "emojibase-data/meta/groups.json";
-import data from "emojibase-data/ko/compact.json";
 import { groupBy } from "es-toolkit";
-import { getSvgFromEmoji, getSvgFromHexcode } from "./utils/emoji";
 import { useQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 
 import { postMessage } from "./messages";
 import { emojiMeta } from "./emojis";
+import { serializeSearchKeyword } from "./utils/search";
 
 // declare global {
 //   interface PluginWindow extends Window {
@@ -35,11 +33,11 @@ function App() {
 
   const grouped = Object.entries(
     groupBy(
-      data
+      emojiMeta.emojiDataUniversal
         .filter(emoji => supportedEmojis.has(emoji.hexcode))
         .filter(emoji =>
-          [emoji.label, ...(emoji.tags ?? [])].some(tag =>
-            tag.includes(search),
+          emoji.searchMeta.some(keyword =>
+            keyword.includes(serializeSearchKeyword(search)),
           ),
         ),
       emoji => emoji.group ?? "undefined",
@@ -65,6 +63,11 @@ function App() {
           height: 250,
         }}
       >
+        {/* <div style={{ display: "flex", flexWrap: "wrap" }}> */}
+        {/*   {emojiMeta.fileEmojis.map(fileName => ( */}
+        {/*     <EmojiIcon hexcode={fileName} /> */}
+        {/*   ))} */}
+        {/* </div> */}
         {grouped.map(([group, emojis]) => (
           <div key={group}>
             <div>{groups.groups[group]}</div>
@@ -74,22 +77,9 @@ function App() {
                 flexWrap: "wrap",
               }}
             >
-              {emojis.map(emoji => {
-                const svg = getSvgFromHexcode(emoji.hexcode);
-
-                // if (!svg) {
-                //   console.error(emoji);
-                //   return (
-                //     <span style={{ backgroundColor: "red" }}>
-                //       {emoji.unicode}
-                //     </span>
-                //   );
-                // }
-                //
-                return (
-                  <EmojiIcon key={emoji.hexcode} hexcode={emoji.hexcode} />
-                );
-              })}
+              {emojis.map(emoji => (
+                <EmojiIcon key={emoji.hexcode} hexcode={emoji.hexcode} />
+              ))}
             </div>
           </div>
         ))}
@@ -105,7 +95,6 @@ function App() {
           )
             .then(data => data.text())
             .then(emoji => {
-              console.log({ data });
               postMessage({
                 type: "create",
                 emojis: [{ name: "test", source: emoji }],
