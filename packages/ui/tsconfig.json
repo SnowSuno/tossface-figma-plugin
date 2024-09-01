@@ -4,6 +4,7 @@
     "module": "esnext",
     "lib": ["es2022", "dom"],
     "jsx": "react",
+    "jsxImportSource": "@emotion/react",
     "typeRoots": ["./node_modules/@types"],
     "baseUrl": "src",
     "paths": {

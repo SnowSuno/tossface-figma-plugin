@@ -2,7 +2,7 @@ import { Message } from "@tossface-figma/common";
 
 figma.showUI(__html__, { themeColors: true });
 
-figma.ui.resize(400, 480);
+figma.ui.resize(386, 480);
 
 figma.ui.onmessage = (msg: Message) => {
   if (msg.type === "create") {

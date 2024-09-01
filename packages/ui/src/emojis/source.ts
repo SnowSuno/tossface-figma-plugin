@@ -4,6 +4,8 @@ import { transformEmojis } from "./transform";
 import emojiDataKo from "emojibase-data/ko/data.json" with { type: "json" };
 import emojiDataEn from "emojibase-data/en/data.json" with { type: "json" };
 import { appendCustomSkinTone, customEmoji } from "./custom";
+import { invert, keyBy, mapValues, sortBy } from "es-toolkit";
+import { byGroup } from "@/common/group";
 
 const baseEmojis = merge(
   transformEmojis("ko", emojiDataKo),
@@ -276,4 +278,7 @@ const customEmojis = [
   // }),
 ];
 
-export const emojiSource = [...baseEmojis, ...customEmojis];
+const a = ["a", "b", "c"];
+console.log(Object.fromEntries(a.map((item, index) => [item, index])));
+
+export const emojiSource = sortBy([...baseEmojis, ...customEmojis], [byGroup]);

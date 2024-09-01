@@ -8,7 +8,17 @@ import compileTime from "vite-plugin-compile-time";
 import base from "../../vite.config.base";
 
 export default defineConfig({
-  plugins: [compileTime(), react(), tsconfigPaths(), viteSingleFile()],
+  plugins: [
+    compileTime(),
+    react({
+      jsxImportSource: "@emotion/react",
+      babel: {
+        plugins: ["@emotion/babel-plugin"],
+      },
+    }),
+    tsconfigPaths(),
+    viteSingleFile(),
+  ],
   build: {
     outDir: base.outDir,
     rollupOptions: {

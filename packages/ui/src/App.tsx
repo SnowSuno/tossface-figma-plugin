@@ -1,4 +1,4 @@
-import React, { useDeferredValue, useState } from "react";
+import React, { useDeferredValue, useMemo, useState } from "react";
 import { useEmojiInput, useToast } from "@/hooks";
 import { logo } from "@/assets";
 
@@ -11,6 +11,8 @@ import { emojiMeta } from "./emojis";
 import { serializeSearchKeyword } from "./utils/search";
 import { EmojiId, Group, TossEmoji } from "./types";
 import { groupsMeta } from "./common/group";
+import { flex } from "./styles/flex";
+import { emojiQuery } from "./api/emoji";
 
 const groupedEmojis = groupBy(emojiMeta.emojis, emoji => emoji.group);
 
@@ -34,61 +36,117 @@ function App() {
 
   const deferrerdSearch = useDeferredValue(search);
 
+  const filteredEmojis = useMemo(
+    () =>
+      emojiMeta.emojis.filter(emoji =>
+        emoji.searchMeta.some(keyword =>
+          keyword.includes(serializeSearchKeyword(deferrerdSearch)),
+        ),
+      ),
+    [deferrerdSearch],
+  );
+
   return (
     <main>
       <img src={logo} style={{ width: 108 }} />
       <input value={search} onChange={e => setSearch(e.target.value)} />
 
-      <EmojiList search={deferrerdSearch} />
+      {search.length === 0 && (
+        <div
+          css={[
+            flex({ direction: "x" }),
+            { overflowY: "scroll", scrollbarWidth: "none" },
+          ]}
+        >
+          {groupsMeta.map(group => (
+            <button
+              key={group.key}
+              style={{
+                paddingInline: 8,
+                paddingBlock: 6,
+                display: "flex",
+                gap: 4,
+                flexDirection: "row",
+                alignItems: "center",
+                whiteSpace: "nowrap",
+                fontSize: 13,
+                borderRadius: 10,
+                color: "var(--grey600)",
+              }}
+            >
+              <Emoji id={group.emoji} size={18} />
+              <span style={{ fontWeight: 500 }}>{group.name.ko}</span>
+            </button>
+          ))}
+        </div>
+      )}
+      <EmojiList
+        search={deferrerdSearch}
+        outdated={search !== deferrerdSearch}
+      />
     </main>
   );
 }
 
-const EmojiList = React.memo(({ search }: { search: string }) => {
-  const filteredEmojis = emojiMeta.emojis.filter(emoji =>
-    emoji.searchMeta.some(keyword =>
-      keyword.includes(serializeSearchKeyword(search)),
-    ),
-  );
+const EmojiList = React.memo(
+  ({ search, outdated }: { search: string; outdated: boolean }) => {
+    const filteredEmojis = emojiMeta.emojis.filter(emoji =>
+      emoji.searchMeta.some(keyword =>
+        keyword.includes(serializeSearchKeyword(search)),
+      ),
+    );
 
-  return (
-    <div
-      style={{
-        overflow: "scroll",
-        height: "100%",
-      }}
-    >
-      {search.length > 0 ? (
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-          }}
-        >
-          {filteredEmojis.map(emoji => (
-            <EmojiIcon key={emoji.id} emoji={emoji} />
-          ))}
-        </div>
-      ) : (
-        groups.map(group => (
-          <div key={group.key}>
-            <div>{group.name.ko}</div>
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-              }}
-            >
-              {group.emojis.map(emoji => (
-                <EmojiIcon key={emoji.id} emoji={emoji} />
-              ))}
-            </div>
+    return (
+      <div
+        style={{
+          overflow: "scroll",
+          height: 350,
+        }}
+      >
+        {search.length > 0 ? (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              // opacity: outdated ? 0.4 : 1,
+            }}
+          >
+            {filteredEmojis.map(emoji => (
+              <EmojiIcon key={emoji.id} emoji={emoji} />
+            ))}
           </div>
-        ))
-      )}
-    </div>
-  );
-});
+        ) : (
+          groups.map(group => (
+            <div key={group.key}>
+              <div
+                style={{
+                  fontWeight: 500,
+                  fontSize: 13,
+                  color: "var(--grey500)",
+                  paddingTop: 10,
+                  paddingBottom: 4,
+                  paddingLeft: 4,
+                }}
+              >
+                {group.name.ko}
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                }}
+              >
+                {group.emojis.map(emoji => (
+                  <EmojiIcon key={emoji.id} emoji={emoji} />
+                ))}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    );
+  },
+);
 
 async function fetchEmoji(id: EmojiId) {
   const data = await fetch(
@@ -100,12 +158,11 @@ async function fetchEmoji(id: EmojiId) {
 
 const size = 40;
 
-const EmojiIcon: React.FC<{ emoji: TossEmoji }> = ({ emoji }) => {
+const EmojiIcon: React.FC<{ emoji: TossEmoji }> = React.memo(({ emoji }) => {
   const { ref, inView } = useInView();
 
   const { data } = useQuery({
-    queryKey: ["emoji", emoji.id],
-    queryFn: () => fetchEmoji(emoji.id),
+    ...emojiQuery(emoji.id),
     enabled: inView,
   });
 
@@ -138,16 +195,25 @@ const EmojiIcon: React.FC<{ emoji: TossEmoji }> = ({ emoji }) => {
         }
         insert();
       }}
-      title={emoji.label.ko}
+      title={emoji.id}
     >
       {/* <img */}
       {/*   src={`https://raw.githubusercontent.com/toss/tossface/main/dist/svg/${emoji.id}.svg`} */}
       {/* /> */}
-      {data && (
-        <span className="fade-in" dangerouslySetInnerHTML={{ __html: data }} />
-      )}
+      {data && <span dangerouslySetInnerHTML={{ __html: data }} />}
     </span>
   );
-};
+});
+
+function Emoji({ id, size }: { id: EmojiId; size: number }) {
+  const { data } = useQuery(emojiQuery(id));
+
+  return (
+    <div
+      style={{ width: size, height: size }}
+      dangerouslySetInnerHTML={{ __html: data ?? "" }}
+    />
+  );
+}
 
 export default App;
