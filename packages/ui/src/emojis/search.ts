@@ -1,20 +1,15 @@
 import { isArray } from "es-toolkit/compat";
-import type { LocalizedEmoji } from "./localize";
 import { serializeSearchKeyword } from "@/utils/search";
+import { Emoji } from "emojibase";
 
 const array = <T>(v: T | T[] | undefined = []) => (isArray(v) ? v : [v]);
 
-export const generateSearchMeta = (emoji: LocalizedEmoji): string[] =>
+export const generateSearchMeta = (emoji: Emoji): string[] =>
   [
-    emoji.unicode,
-    ...Object.values(emoji.label),
+    emoji.emoji,
+    emoji.label,
     ...array(emoji.tags),
     ...array(emoji.shortcodes),
     ...array(emoji.emoticon),
-    ...array(emoji.skins).map(skinEmoji => skinEmoji.unicode),
+    ...array(emoji.skins).map(skinEmoji => skinEmoji.emoji),
   ].map(serializeSearchKeyword);
-
-export const withSearchMeta = (emoji: LocalizedEmoji) => ({
-  ...emoji,
-  searchMeta: generateSearchMeta(emoji),
-});

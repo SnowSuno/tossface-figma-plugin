@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useDeferredValue, useState } from "react";
 import { useEmojiInput, useToast } from "@/hooks";
 import { logo } from "@/assets";
-import groups from "emojibase-data/meta/groups.json";
+
 import { groupBy } from "es-toolkit";
 import { useQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
@@ -9,14 +9,15 @@ import { useInView } from "react-intersection-observer";
 import { postMessage } from "./messages";
 import { emojiMeta } from "./emojis";
 import { serializeSearchKeyword } from "./utils/search";
+import { EmojiId, Group, TossEmoji } from "./types";
+import { groupsMeta } from "./common/group";
 
-// declare global {
-//   interface PluginWindow extends Window {
-//     postMessage(arg: { pluginMessage: string }): void;
-//   }
-// }
-//
-const supportedEmojis = new Set(emojiMeta.supportedEmojis);
+const groupedEmojis = groupBy(emojiMeta.emojis, emoji => emoji.group);
+
+const groups = groupsMeta.map(meta => ({
+  ...meta,
+  emojis: groupedEmojis[meta.key] ?? [],
+}));
 
 function App() {
   const { openToast } = useToast();
@@ -31,114 +32,89 @@ function App() {
     openToast("success", "이모지를 삽입했어요.");
   };
 
-  const grouped = Object.entries(
-    groupBy(
-      emojiMeta.emojiDataUniversal
-        .filter(emoji => supportedEmojis.has(emoji.hexcode))
-        .filter(emoji =>
-          emoji.searchMeta.some(keyword =>
-            keyword.includes(serializeSearchKeyword(search)),
-          ),
-        ),
-      emoji => emoji.group ?? "undefined",
-    ),
-  );
+  const deferrerdSearch = useDeferredValue(search);
 
   return (
     <main>
       <img src={logo} style={{ width: 108 }} />
-      {/* <textarea */}
-      {/*   placeholder="😍😎🥲😤👻" */}
-      {/*   style={{ fontFamily: "Tossface" }} */}
-      {/*   {...input} */}
-      {/* /> */}
-      {/* <p> */}
-      {/*   <span>Control(⌃)+Command(⌘)+Space bar</span>를 눌러 이모지를 */}
-      {/*   입력해보세요 */}
-      {/* </p> */}
       <input value={search} onChange={e => setSearch(e.target.value)} />
-      <div
-        style={{
-          overflow: "scroll",
-          height: 250,
-        }}
-      >
-        {/* <div style={{ display: "flex", flexWrap: "wrap" }}> */}
-        {/*   {emojiMeta.fileEmojis.map(fileName => ( */}
-        {/*     <EmojiIcon hexcode={fileName} /> */}
-        {/*   ))} */}
-        {/* </div> */}
-        {grouped.map(([group, emojis]) => (
-          <div key={group}>
-            <div>{groups.groups[group]}</div>
+
+      <EmojiList search={deferrerdSearch} />
+    </main>
+  );
+}
+
+const EmojiList = React.memo(({ search }: { search: string }) => {
+  const filteredEmojis = emojiMeta.emojis.filter(emoji =>
+    emoji.searchMeta.some(keyword =>
+      keyword.includes(serializeSearchKeyword(search)),
+    ),
+  );
+
+  return (
+    <div
+      style={{
+        overflow: "scroll",
+        height: "100%",
+      }}
+    >
+      {search.length > 0 ? (
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+          }}
+        >
+          {filteredEmojis.map(emoji => (
+            <EmojiIcon key={emoji.id} emoji={emoji} />
+          ))}
+        </div>
+      ) : (
+        groups.map(group => (
+          <div key={group.key}>
+            <div>{group.name.ko}</div>
             <div
               style={{
                 display: "flex",
                 flexWrap: "wrap",
               }}
             >
-              {emojis.map(emoji => (
-                <EmojiIcon key={emoji.hexcode} hexcode={emoji.hexcode} />
+              {group.emojis.map(emoji => (
+                <EmojiIcon key={emoji.id} emoji={emoji} />
               ))}
             </div>
           </div>
-        ))}
-      </div>
-      {/* <button id="create" onClick={createEmojis} disabled={!emojis.length}> */}
-      {/*   삽입하기 */}
-      {/* </button> */}
-      <button
-        id="create"
-        onClick={() => {
-          fetch(
-            "https://raw.githubusercontent.com/toss/tossface/main/dist/svg/asterisk.svg",
-          )
-            .then(data => data.text())
-            .then(emoji => {
-              postMessage({
-                type: "create",
-                emojis: [{ name: "test", source: emoji }],
-              });
-            });
-        }}
-      >
-        테스트
-      </button>
-    </main>
+        ))
+      )}
+    </div>
   );
-}
+});
 
-async function fetchEmoji(hexcode: string) {
-  const svgName = hexcode
-    .split("-")
-    .filter(code => code !== "FE0F")
-    .map(code => `u${code}`)
-    .join("_");
-
+async function fetchEmoji(id: EmojiId) {
   const data = await fetch(
-    `https://raw.githubusercontent.com/toss/tossface/main/dist/svg/${svgName}.svg`,
+    `https://raw.githubusercontent.com/toss/tossface/main/dist/svg/${id}.svg`,
   );
 
   return await data.text();
 }
 
-const size = 36;
+const size = 40;
 
-const EmojiIcon: React.FC<{ hexcode: string }> = ({ hexcode }) => {
+const EmojiIcon: React.FC<{ emoji: TossEmoji }> = ({ emoji }) => {
   const { ref, inView } = useInView();
 
   const { data } = useQuery({
-    queryKey: ["emoji", hexcode],
-    queryFn: () => fetchEmoji(hexcode),
+    queryKey: ["emoji", emoji.id],
+    queryFn: () => fetchEmoji(emoji.id),
     enabled: inView,
   });
 
-  const onInsert = () =>
+  const insert = () =>
     parent.postMessage(
       {
         pluginMessage: {
           type: "create",
-          emojis: [{ name: hexcode, source: data }],
+          emojis: [{ name: emoji.label.ko, source: data }],
         },
         pluginId: "*",
       },
@@ -155,8 +131,18 @@ const EmojiIcon: React.FC<{ hexcode: string }> = ({ hexcode }) => {
         padding: 4,
         borderRadius: 6,
       }}
-      onClick={onInsert}
+      onClick={() => {
+        if (emoji.skins) {
+          alert("skin");
+          return;
+        }
+        insert();
+      }}
+      title={emoji.label.ko}
     >
+      {/* <img */}
+      {/*   src={`https://raw.githubusercontent.com/toss/tossface/main/dist/svg/${emoji.id}.svg`} */}
+      {/* /> */}
       {data && (
         <span className="fade-in" dangerouslySetInnerHTML={{ __html: data }} />
       )}
