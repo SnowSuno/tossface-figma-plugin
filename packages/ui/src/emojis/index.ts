@@ -1,9 +1,11 @@
-import { Hexcode } from "emojibase";
-import type { EmojiMeta } from "./getEmojiMeta";
+import type { EmojiMeta } from "./emojis.compile";
+import { groupBy } from "es-toolkit";
 
 /**
  * Emoji metadata precompiled at build time
  */
-export const emojiMeta = import.meta.compileTime<EmojiMeta>("./compileTime.ts");
+const { emojis } = import.meta.compileTime<EmojiMeta>("./emojis.compile.ts");
 
-export const getEmoji = (hexcode: Hexcode) => emojiMeta.emojiTable[hexcode];
+const grouped = groupBy(emojis, emoji => emoji.group);
+
+export const tossEmojis = { list: emojis, grouped };

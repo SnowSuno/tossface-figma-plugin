@@ -2,11 +2,13 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import { OverlayProvider } from "@toss/use-overlay";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-
-const queryClient = new QueryClient();
+import { QueryClientProvider } from "@tanstack/react-query";
 
 import "./style.css";
+import { queryClient } from "./query";
+// import { emojiQueryManager } from "./emojiQueryManager";
+
+// emojiQueryManager();
 
 document.addEventListener("DOMContentLoaded", function () {
   const container = document.getElementById("react-page");

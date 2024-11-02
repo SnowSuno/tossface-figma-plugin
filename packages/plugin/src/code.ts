@@ -6,6 +6,8 @@ figma.ui.resize(386, 480);
 
 figma.ui.onmessage = (msg: Message) => {
   if (msg.type === "create") {
+    figma.notify("이모지를 삽입했어요.");
+
     const emojis = msg.emojis;
 
     const nodes = emojis.map((emoji, i) => {

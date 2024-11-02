@@ -1,11 +1,12 @@
 import path from "node:path";
+import type { CompileTimeFunctionResult } from "vite-plugin-compile-time";
 
 import { emojiSource } from "./source";
 import { readDirAsync } from "./utils";
-import { TossEmoji } from "@/types";
+import type { TossEmoji } from "@/types";
 import { difference } from "es-toolkit";
 
-export async function getEmojiMeta() {
+async function getEmojiMeta() {
   const tossfaceEmojis = new Set(
     (
       await readDirAsync(
@@ -41,3 +42,7 @@ export async function getEmojiMeta() {
 }
 
 export type EmojiMeta = Awaited<ReturnType<typeof getEmojiMeta>>;
+
+export default async (): Promise<CompileTimeFunctionResult> => ({
+  data: await getEmojiMeta(),
+});

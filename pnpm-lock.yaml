@@ -68,6 +68,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.51.23
         version: 5.51.23(react@18.2.0)
+      '@tanstack/react-virtual':
+        specifier: ^3.10.6
+        version: 3.10.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@toss/use-overlay':
         specifier: ^1.3.8
         version: 1.3.8(react@18.2.0)
@@ -753,6 +756,15 @@ packages:
     resolution: {integrity: sha512-CfJCfX45nnVIZjQBRYYtvVMIsGgWLKLYC4xcUiYEey671n1alvTZoCBaU9B85O8mF/tx9LPyrI04A6Bs2THv4A==}
     peerDependencies:
       react: ^18.0.0
+
+  '@tanstack/react-virtual@3.10.6':
+    resolution: {integrity: sha512-xaSy6uUxB92O8mngHZ6CvbhGuqxQ5lIZWCBy+FjhrbHmOwc6BnOnKkYm2FsB1/BpKw/+FVctlMbEtI+F6I1aJg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+
+  '@tanstack/virtual-core@3.10.6':
+    resolution: {integrity: sha512-1giLc4dzgEKLMx5pgKjL6HlG5fjZMgCjzlKAlpr7yoUtetVPELgER1NtephAI910nMwfPTHNyWKSFmJdHkz2Cw==}
 
   '@toss/use-overlay@1.3.8':
     resolution: {integrity: sha512-VdyAOaZsiDN5I+eo3oNZVOTqDU+S+WL+xg7Qln/ea073JO7l+UVnv4GWkRTCsmF1GB0OI4WBDDi0U7XEkLt0nQ==}
@@ -2548,6 +2560,14 @@ snapshots:
     dependencies:
       '@tanstack/query-core': 5.51.21
       react: 18.2.0
+
+  '@tanstack/react-virtual@3.10.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@tanstack/virtual-core': 3.10.6
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+
+  '@tanstack/virtual-core@3.10.6': {}
 
   '@toss/use-overlay@1.3.8(react@18.2.0)':
     dependencies:

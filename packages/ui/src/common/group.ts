@@ -1,7 +1,7 @@
 import { EmojiId, Group } from "@/types";
 import { Localized } from "./locale";
 
-interface GroupMeta {
+export interface GroupMeta {
   key: Group;
   emoji: EmojiId;
   name: Localized<string>;
