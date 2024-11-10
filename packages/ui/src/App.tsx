@@ -12,7 +12,6 @@ import { flex } from "./styles/flex";
 import { emojiQuery } from "./api/emoji";
 import { SectionList, SectionListHandle } from "./components/SectionList";
 import { Interpolation } from "@emotion/react";
-import { useDebounce } from "./hooks/useDebounce";
 import { GroupedEmojiList } from "./components/GroupedEmojiList";
 import { FilteredEmojiList } from "./components/FilteredEmojiList";
 import { EmojiButton } from "./components/EmojiIcon";
@@ -25,12 +24,12 @@ const SearchIcon = () => (
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
   >
-    <g fill="none" stroke="var(--grey600)" stroke-miterlimit="10">
-      <circle cx="10.389" cy="10.388" r="7.395" stroke-width="2.032" />
+    <g fill="none" stroke="var(--grey600)" strokeMiterlimit="10">
+      <circle cx="10.389" cy="10.388" r="7.395" strokeWidth="2.032" />
       <path
         d="m15.64 15.638 5.517 5.517"
-        stroke-linecap="round"
-        stroke-width="2.001"
+        strokeLinecap="round"
+        strokeWidth="2.001"
       />
     </g>
   </svg>

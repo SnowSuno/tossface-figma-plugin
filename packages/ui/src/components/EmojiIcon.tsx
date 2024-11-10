@@ -5,7 +5,7 @@ import { EmojiId, TossEmoji } from "@/types";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { css, Interpolation, Theme } from "@emotion/react";
 
-import { flex, size } from "@/styles";
+import { flex, pressable, size } from "@/styles";
 import { noop, throttle } from "es-toolkit";
 import { AnimatePresence, motion } from "framer-motion";
 import { useInsertEmoji } from "@/hooks/useInsertEmoji";
@@ -32,19 +32,19 @@ interface EmojiButtonProps {
   lane: number;
   top: number;
   emoji: TossEmoji;
-  onInsert?: (emoji: TossEmoji) => void;
 }
 
 export const EMOJI_SIZE = 44;
 const LANES = 8;
+const POPUP_PADDING = 6;
 
 export const dismissPopup = throttle(
   () => dispatchEvent(new CustomEvent("dismissPopup")),
-  1000,
+  500,
 );
 
 export const EmojiButton = React.memo(
-  ({ lane, top, emoji, onInsert = noop }: EmojiButtonProps) => {
+  ({ lane, top, emoji }: EmojiButtonProps) => {
     const { insertEmoji } = useInsertEmoji();
     const [popupOpen, setPopupOpen] = useState(false);
 
@@ -79,12 +79,16 @@ export const EmojiButton = React.memo(
         initial={false}
         layout
         animate={{
-          top: popupOpen ? top - 4 : top,
-          left: popupOpen ? EMOJI_SIZE * start - 4 : x,
-          width: popupOpen ? EMOJI_SIZE * childNumber + 8 : EMOJI_SIZE,
-          padding: popupOpen ? 4 : 0,
-          boxShadow: popupOpen ? "0 0 30px var(--grey400)" : undefined,
-          ...(popupOpen ? { zIndex: 10 } : { transitionEnd: { zIndex: 0 } }),
+          top: popupOpen ? top - POPUP_PADDING : top,
+          left: popupOpen ? EMOJI_SIZE * start - POPUP_PADDING : x,
+          width: popupOpen
+            ? EMOJI_SIZE * childNumber + POPUP_PADDING * 2
+            : EMOJI_SIZE,
+          padding: popupOpen ? POPUP_PADDING : 0,
+          boxShadow: popupOpen ? "0 0 36px var(--grey400)" : undefined,
+          ...(popupOpen
+            ? { zIndex: 10 }
+            : { zIndex: 5, transitionEnd: { zIndex: 0 } }),
         }}
         css={[
           flex({ direction: "x" }),
@@ -138,14 +142,3 @@ export const EmojiButton = React.memo(
     );
   },
 );
-
-const pressable = css({
-  ":hover": {
-    backgroundColor: "var(--grey100)",
-  },
-  ":active": {
-    scale: 0.9,
-    backgroundColor: "var(--grey200)",
-  },
-  "transition": "scale .1s ease, background .2s ease",
-});

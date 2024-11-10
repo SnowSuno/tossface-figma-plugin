@@ -84,14 +84,14 @@ export const FilteredEmojiList = React.memo(({ search }: Props) => {
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M6.00003 5.00003L6.00003 34.332C6.00003 35.437 6.89503 36.332 8.00003 36.332H24.333L34.332 26.332L34.332 5.00003C34.332 3.89503 33.437 3.00003 32.332 3.00003H8.00003C6.89503 3.00003 6.00003 3.89503 6.00003 5.00003Z"
           fill="#E5E9EE"
         />
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M26.332 26.332H34.332L24.333 36.332V28.332C24.333 27.227 25.228 26.332 26.333 26.332H26.332Z"
           fill="#C0C7D1"
         />

@@ -2,14 +2,14 @@ import { tossEmojis } from "@/emojis";
 import { GroupMeta, groupsMeta } from "@/common/group";
 import { dismissPopup, EMOJI_SIZE, EmojiButton, EmojiIcon } from "./EmojiIcon";
 import { flex } from "@/styles/flex";
-import React, { useRef } from "react";
-import {
-  elementScroll,
-  useVirtualizer,
-  VirtualizerOptions,
-} from "@tanstack/react-virtual";
-import { chunk, memoize, throttle } from "es-toolkit";
-import { Group, TossEmoji } from "@/types";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useVirtualizer, VirtualizerOptions } from "@tanstack/react-virtual";
+import { chunk, debounce, memoize, throttle } from "es-toolkit";
+import { EmojiId, Group, TossEmoji } from "@/types";
+import { AnimatePresence, motion } from "framer-motion";
+import { useDebounce } from "@/hooks/useDebounce";
+import { usePreservedReference } from "@/hooks/usePreservedReference";
+import { css } from "@emotion/react";
 
 // const rows = groupsMeta.flatMap(group => [
 //   { type: "header", data: group } as const,
@@ -38,51 +38,84 @@ groupsMeta.forEach(group => {
   });
 });
 
-const getCurrentGroup = memoize((rowIndex: number) => {
-  const row = rows[rowIndex + 1];
-
+const findClosestHeaderRow = memoize((index: number) => {
+  const row = rows[index];
   if (row.type === "header") return row.data.key;
-  return getCurrentGroup(rowIndex - 1);
+  return findClosestHeaderRow(index - 1);
 });
-
-function easeInOutQuint(t: number) {
-  return t < 0.5 ? 16 * t * t * t * t : 1 + 16 * --t * t * t * t;
-}
 
 export const GroupedEmojiList = React.memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const scrollToFn: VirtualizerOptions<any, any>["scrollToFn"] =
     React.useCallback((offset, canSmooth, instance) => {
-      containerRef.current?.scrollTo({ top: offset, behavior: "smooth" });
+      containerRef.current?.scrollTo({ top: offset });
     }, []);
+
+  const [currentGroup, setCurrentGroup] = useState(groupsMeta[0].key);
+
+  // const currentGroup = usePreservedReference(_currentGroup);
+  const setCurrentGroupDebounced = useDebounce(setCurrentGroup, 500, {
+    edges: ["leading", "trailing"],
+  });
+
+  const focusGroup = (group: Group) => {
+    // groupScrollerRef.current?.scrollTo({
+    //   left: 200,
+    //   behavior: "smooth",
+    // });
+    setCurrentGroup(group);
+  };
 
   const virtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => containerRef.current,
-    estimateSize: i => (rows[i].type === "header" ? 20 : EMOJI_SIZE),
+    estimateSize: i => (rows[i].type === "header" ? 32 : EMOJI_SIZE),
     overscan: 10,
     scrollToFn,
-    isScrollingResetDelay: 50,
+    isScrollingResetDelay: 1,
+    onChange: ({ range }) => {
+      if (!range) return;
+      const group = findClosestHeaderRow(
+        Math.floor((range.startIndex + range.endIndex) / 2),
+      );
+      if (currentGroup === group) return;
+      focusGroup(group);
+    },
   });
 
-  // const currentGroup = getCurrentGroup(virtualizer.range?.startIndex ?? 0);
+  // const groupScrollerRef = useRef<HTMLDivElement>(null);
 
   return (
     <>
-      <div css={[flex({ direction: "x", gap: 4 }), { paddingInline: 16 }]}>
+      <div
+        // ref={groupScrollerRef}
+        css={[
+          flex({ direction: "x" }),
+          {
+            flexShrink: 0,
+            paddingTop: 6,
+            paddingInline: 16,
+            overflowX: "scroll",
+          },
+          { scrollbarWidth: "none", scrollBehavior: "smooth" },
+        ]}
+      >
         {groupsMeta.map(group => (
-          <button
+          <GroupButton
             key={group.key}
-            // onClick={() =>
-            //   virtualizer.scrollToIndex(groupIndex[group.key], {
-            //     align: "start",
-            //   })
-            // }
-            css={{}}
+            icon={group.emoji}
+            focused={currentGroup === group.key}
+            onClick={useCallback(() => {
+              focusGroup(group.key);
+
+              virtualizer.scrollToIndex(groupIndex[group.key], {
+                align: "start",
+              });
+            }, [])}
           >
             {group.name["ko"]}
-          </button>
+          </GroupButton>
         ))}
       </div>
       <div
@@ -95,7 +128,7 @@ export const GroupedEmojiList = React.memo(() => {
             height: virtualizer.getTotalSize(),
             width: "100%",
             position: "relative",
-            marginBottom: 40,
+            marginBottom: 154,
           }}
         >
           {virtualizer.getVirtualItems().map(({ index, key, size, start }) =>
@@ -109,7 +142,7 @@ export const GroupedEmojiList = React.memo(() => {
                   height: size,
                   fontSize: 12,
                   color: "var(--grey500)",
-                  paddingTop: 4,
+                  paddingTop: 14,
                   paddingInline: 2,
                 }}
               >
@@ -130,4 +163,77 @@ export const GroupedEmojiList = React.memo(() => {
       </div>
     </>
   );
+});
+
+interface GroupButtonProps {
+  icon: EmojiId;
+  children: string;
+  focused: boolean;
+  onClick?: () => void;
+}
+
+const GroupButton = React.memo(function GroupButton({
+  icon,
+  children,
+  focused,
+  onClick,
+}: GroupButtonProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (focused) {
+      ref.current?.scrollIntoView({ behavior: "smooth", inline: "center" });
+    }
+  }, [focused]);
+
+  return (
+    <div ref={ref} css={{ position: "relative" }}>
+      <button
+        css={[
+          pressable,
+          flex({ direction: "x", align: "center", gap: 2 }),
+          {
+            paddingBlock: 8,
+            paddingInline: 10,
+            position: "relative",
+            zIndex: 10,
+            borderRadius: 10,
+          },
+        ]}
+        onClick={onClick}
+      >
+        <EmojiIcon emojiId={icon} size={16} />
+        <span css={{ whiteSpace: "nowrap" }}>{children}</span>
+      </button>
+      <AnimatePresence initial={false}>
+        {focused && (
+          <motion.div
+            layoutId="groupBtnBackground"
+            css={{
+              position: "absolute",
+              borderRadius: 10,
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              background: "var(--grey100)",
+              zIndex: 0,
+            }}
+          />
+        )}
+      </AnimatePresence>
+    </div>
+  );
+});
+
+export const pressable = css({
+  ":hover": {
+    // opacity: 0.5,
+    backgroundColor: "var(--greyOpacity50)",
+  },
+  ":active": {
+    scale: 0.9,
+    // backgroundColor: "var(--grey300)",
+  },
+  "transition": "scale .1s ease, background .2s ease, opacity .2s ease",
 });

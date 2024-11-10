@@ -23,6 +23,7 @@ export const emojiQuery = (emojiId: EmojiId) =>
     queryFn: () => apiPool.run(() => fetchEmoji(emojiId)),
     staleTime: Infinity,
     gcTime: Infinity,
+    refetchOnMount: false,
   });
 
 // Schedule all tasks at low priorty
