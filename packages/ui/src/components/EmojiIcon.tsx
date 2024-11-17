@@ -2,11 +2,10 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Svg } from "./Svg";
 import { emojiQuery } from "@/api/emoji";
 import { EmojiId, TossEmoji } from "@/types";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { css, Interpolation, Theme } from "@emotion/react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { flex, pressable, size } from "@/styles";
-import { noop, throttle } from "es-toolkit";
+import { throttle } from "es-toolkit";
 import { AnimatePresence, motion } from "framer-motion";
 import { useInsertEmoji } from "@/hooks/useInsertEmoji";
 import useClickOutside from "@/hooks/useClickOutside";

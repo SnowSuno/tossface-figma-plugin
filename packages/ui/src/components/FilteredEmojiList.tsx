@@ -1,10 +1,9 @@
 import { tossEmojis } from "@/emojis";
 import { serializeSearchKeyword } from "@/utils/search";
 import React, { useDeferredValue, useMemo, useRef } from "react";
-import { dismissPopup, EMOJI_SIZE, EmojiButton, EmojiIcon } from "./EmojiIcon";
+import { dismissPopup, EMOJI_SIZE, EmojiButton } from "./EmojiIcon";
 import { flex } from "@/styles/flex";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { size } from "@/styles";
 
 interface Props {
   search: string;
@@ -55,18 +54,16 @@ export const FilteredEmojiList = React.memo(({ search }: Props) => {
           marginBottom: 40,
         }}
       >
-        {virtualizer
-          .getVirtualItems()
-          .map(({ index, key, size, start, lane }) => {
-            return (
-              <EmojiButton
-                key={key}
-                top={start}
-                lane={lane}
-                emoji={filteredEmojis[index]}
-              />
-            );
-          })}
+        {virtualizer.getVirtualItems().map(({ index, key, start, lane }) => {
+          return (
+            <EmojiButton
+              key={key}
+              top={start}
+              lane={lane}
+              emoji={filteredEmojis[index]}
+            />
+          );
+        })}
       </div>
     </div>
   ) : (

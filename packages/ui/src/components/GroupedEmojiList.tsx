@@ -4,11 +4,9 @@ import { dismissPopup, EMOJI_SIZE, EmojiButton, EmojiIcon } from "./EmojiIcon";
 import { flex } from "@/styles/flex";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useVirtualizer, VirtualizerOptions } from "@tanstack/react-virtual";
-import { chunk, debounce, memoize, throttle } from "es-toolkit";
+import { chunk, memoize } from "es-toolkit";
 import { EmojiId, Group, TossEmoji } from "@/types";
 import { AnimatePresence, motion } from "framer-motion";
-import { useDebounce } from "@/hooks/useDebounce";
-import { usePreservedReference } from "@/hooks/usePreservedReference";
 import { css } from "@emotion/react";
 
 // const rows = groupsMeta.flatMap(group => [
@@ -48,16 +46,13 @@ export const GroupedEmojiList = React.memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const scrollToFn: VirtualizerOptions<any, any>["scrollToFn"] =
-    React.useCallback((offset, canSmooth, instance) => {
+    React.useCallback(offset => {
       containerRef.current?.scrollTo({ top: offset });
     }, []);
 
   const [currentGroup, setCurrentGroup] = useState(groupsMeta[0].key);
 
   // const currentGroup = usePreservedReference(_currentGroup);
-  const setCurrentGroupDebounced = useDebounce(setCurrentGroup, 500, {
-    edges: ["leading", "trailing"],
-  });
 
   const focusGroup = (group: Group) => {
     // groupScrollerRef.current?.scrollTo({

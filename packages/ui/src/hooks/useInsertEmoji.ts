@@ -1,5 +1,5 @@
 import { emojiQuery } from "@/api/emoji";
-import { BaseTossEmoji, EmojiId } from "@/types";
+import { BaseTossEmoji } from "@/types";
 import { useQueryClient } from "@tanstack/react-query";
 
 export function useInsertEmoji() {

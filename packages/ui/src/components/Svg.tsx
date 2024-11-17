@@ -1,4 +1,3 @@
-import { memoize } from "es-toolkit";
 import React from "react";
 
 interface Props {

@@ -4,7 +4,7 @@ import { transformEmojis } from "./transform";
 import emojiDataKo from "emojibase-data/ko/data.json" with { type: "json" };
 import emojiDataEn from "emojibase-data/en/data.json" with { type: "json" };
 import { appendCustomSkinTone, customEmoji } from "./custom";
-import { invert, keyBy, mapValues, sortBy } from "es-toolkit";
+import { sortBy } from "es-toolkit";
 import { byGroup } from "@/common/group";
 
 const baseEmojis = merge(
