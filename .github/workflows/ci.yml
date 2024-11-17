@@ -10,9 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-      - uses: pnpm/action-setup@v4
         with:
-          version: 9.7.1
+          node-version-file: ".nvmrc"
+      - uses: pnpm/action-setup@v4
       - run: pnpm install
       - run: pnpm typecheck
       - run: pnpm build
