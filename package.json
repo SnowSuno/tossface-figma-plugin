@@ -4,6 +4,7 @@
   "description": "An unofficial figma plugin for TossFace",
   "license": "MIT",
   "type": "module",
+  "packageManager": "pnpm@9.7.1",
   "scripts": {
     "prepare": "husky install",
     "plugin": "pnpm -F @tossface-figma/plugin",
