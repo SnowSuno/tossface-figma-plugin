@@ -1,20 +1,9 @@
-import React, { CSSProperties, useMemo, useRef, useState } from "react";
+import { useState } from "react";
 import { logo } from "@/assets";
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useInView } from "react-intersection-observer";
-
-import { tossEmojis } from "./emojis";
-import { serializeSearchKeyword } from "./utils/search";
-import { EmojiId, Group, TossEmoji } from "./types";
-import { groupsMeta } from "./common/group";
 import { flex } from "./styles/flex";
-import { emojiQuery } from "./api/emoji";
-import { SectionList, SectionListHandle } from "./components/SectionList";
-import { Interpolation } from "@emotion/react";
 import { GroupedEmojiList } from "./components/GroupedEmojiList";
 import { FilteredEmojiList } from "./components/FilteredEmojiList";
-import { EmojiButton } from "./components/EmojiIcon";
 import { MotionConfig } from "framer-motion";
 
 const SearchIcon = () => (
@@ -78,7 +67,7 @@ function App() {
             },
             "caretColor": "var(--blue500)",
           }}
-          placeholder="이모지를 검색하세요"
+          placeholder="원하는 이모지를 찾아보세요"
         />
       </div>
 
