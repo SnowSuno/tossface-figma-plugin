@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "lib": ["es2022", "dom"],
+    "jsx": "react",
+    "typeRoots": ["./node_modules/@types"],
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["src/**/*"]
+}

@@ -4,35 +4,28 @@
   "description": "An unofficial figma plugin for TossFace",
   "license": "MIT",
   "type": "module",
+  "packageManager": "pnpm@9.7.1",
   "scripts": {
     "prepare": "husky install",
-    "build": "pnpm run '/^build:.*/'",
-    "build:main": "esbuild main/code.ts --bundle --outfile=dist/code.js",
-    "build:ui": "tsc && vite build",
-    "dev": "pnpm run --stream '/^dev:.*/'",
-    "dev:main": "pnpm run build:main --watch",
-    "dev:ui": "pnpm run build:ui --watch",
-    "format": "prettier --write '**/*.{js,jsx,ts,tsx,css,json}' "
-  },
-  "dependencies": {
-    "@toss/use-overlay": "^1.3.8",
-    "emoji-regex": "^10.3.0",
-    "framer-motion": "^11.3.24",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "plugin": "pnpm -F @tossface-figma/plugin",
+    "ui": "pnpm -F @tossface-figma/ui",
+    "common": "pnpm -F @tossface-figma/common",
+    "dev": "pnpm -r --stream dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "format": "prettier --write '**/*.{js,jsx,ts,tsx,css,json}'",
+    "clean": "rimraf dist",
+    "update:tossface": "git submodule update --remote"
   },
   "devDependencies": {
     "@commitlint/types": "^18.4.3",
-    "@figma/plugin-typings": "^1.50.0",
-    "@types/react": "^18.0.17",
-    "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^4.3.1",
     "commitlint": "^18.4.3",
     "commitlint-config-gitmoji": "^2.3.1",
-    "esbuild": "^0.23.0",
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.3.0",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.0.1",
     "typescript": "^5.5.4",
     "vite": "^5.4.0",
     "vite-plugin-singlefile": "^2.0.2",
@@ -44,7 +37,7 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,css,json}": [
+    "packages/*/src/**/*.{js,jsx,ts,tsx,css,json}": [
       "prettier --write"
     ]
   }

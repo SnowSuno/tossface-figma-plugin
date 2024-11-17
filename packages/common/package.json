@@ -1,0 +1,5 @@
+{
+  "name": "@tossface-figma/common",
+  "type": "module",
+  "main": "index.ts"
+}
