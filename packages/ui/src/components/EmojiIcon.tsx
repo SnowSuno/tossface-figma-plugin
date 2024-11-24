@@ -4,13 +4,16 @@ import { emojiQuery } from "@/api/emoji";
 import { EmojiId, TossEmoji } from "@/types";
 import React, { useEffect, useRef, useState } from "react";
 
-import { flex, pressable, size } from "@/styles";
+import { bg, flex, padding, pressable, round, spacing, wh } from "@/styles";
 import { throttle } from "es-toolkit";
 import { AnimatePresence, motion } from "framer-motion";
 import { useInsertEmoji } from "@/hooks/useInsertEmoji";
 import useClickOutside from "@/hooks/useClickOutside";
+import clsx from "clsx";
+import { fade } from "@/styles/test.css";
 
 interface Props {
+  className?: string;
   emojiId: EmojiId;
   size?: number;
 }
@@ -20,8 +23,11 @@ export const EmojiIcon = React.memo(
     const { data } = useQuery(emojiQuery(emojiId));
 
     return (
-      <div css={sizeValue && size(sizeValue)} {...props}>
-        {data && <Svg data={data} />}
+      <div
+        // css={sizeValue && { width: sizeValue, height: sizeValue }}
+        {...props}
+      >
+        {data && <Svg data={data} className={fade} />}
       </div>
     );
   },
@@ -33,7 +39,7 @@ interface EmojiButtonProps {
   emoji: TossEmoji;
 }
 
-export const EMOJI_SIZE = 44;
+export const EMOJI_SIZE = spacing.icon;
 const LANES = 8;
 const POPUP_PADDING = 6;
 
@@ -89,24 +95,17 @@ export const EmojiButton = React.memo(
             ? { zIndex: 10 }
             : { zIndex: 5, transitionEnd: { zIndex: 0 } }),
         }}
-        css={[
-          flex({ direction: "x" }),
-          {
-            backgroundColor: "var(--white)",
-            position: "absolute",
-            borderRadius: 12,
-            overflow: "hidden",
-          },
-        ]}
+        className={clsx(flex.x, bg.white, round[12])}
+        style={{
+          position: "absolute",
+          overflow: "hidden",
+        }}
       >
         <AnimatePresence>
           <motion.button
             key={emoji.id}
-            css={[
-              pressable,
-              size(EMOJI_SIZE),
-              { padding: 4, borderRadius: 8, zIndex: 10, flexShrink: 0 },
-            ]}
+            className={clsx(wh.icon, padding[4], round[8], pressable)}
+            style={{ zIndex: 10, flexShrink: 0 }}
             onClick={() => {
               if (emoji.skins != null && !popupOpen) return setPopupOpen(true);
 
@@ -123,11 +122,8 @@ export const EmojiButton = React.memo(
                 initial={{ opacity: 0.7, scale: 0.3 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0.7, scale: 0.3 }}
-                css={[
-                  pressable,
-                  size(EMOJI_SIZE),
-                  { padding: 4, borderRadius: 8, flexShrink: 0 },
-                ]}
+                className={clsx(wh.icon, padding[4], round[8], pressable)}
+                style={{ flexShrink: 0 }}
                 onClick={() => {
                   insertEmoji(skinEmoji);
                   setPopupOpen(false);

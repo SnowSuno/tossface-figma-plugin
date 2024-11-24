@@ -1,6 +1,6 @@
-import { css } from "@emotion/react";
+import { style } from "@vanilla-extract/css";
 
-export const pressable = css({
+export const pressable = style({
   ":hover": {
     backgroundColor: "var(--grey200)",
   },
