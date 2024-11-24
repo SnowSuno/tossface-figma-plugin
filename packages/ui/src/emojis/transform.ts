@@ -30,6 +30,7 @@ const toTossGroup = (group: number | undefined = -1): Group => {
 
 const toTossEmoji = (locale: Locale, emoji: FlatEmoji): BaseTossEmoji => ({
   id: toEmojiId(emoji.hexcode),
+  unicode: emoji.emoji,
   label: localize(locale, emoji.label),
   group: toTossGroup(emoji.group),
 });
