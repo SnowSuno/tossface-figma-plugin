@@ -12,7 +12,9 @@ export function useInsertEmoji() {
       {
         pluginMessage: {
           type: "create",
-          emojis: [{ name: emoji.label.ko, source: emojiData }],
+          emojis: [
+            { name: `${emoji.unicode} ${emoji.label.ko}`, source: emojiData },
+          ],
         },
         pluginId: "*",
       },

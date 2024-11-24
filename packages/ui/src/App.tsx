@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { logo } from "@/assets";
 
-import { flex } from "./styles/flex";
 import { GroupedEmojiList } from "./components/GroupedEmojiList";
 import { FilteredEmojiList } from "./components/FilteredEmojiList";
 import { MotionConfig } from "framer-motion";
+import clsx from "clsx";
+
+import { align, bg, flex, h, margin, padding, round } from "@/styles";
 
 const SearchIcon = () => (
   <svg
@@ -28,44 +30,36 @@ function App() {
   const [search, setSearch] = useState("");
 
   return (
-    <main
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        paddingTop: 12,
-      }}
-    >
+    <main className={clsx(flex.y, h.full, padding.top[12])}>
       <img src={logo} style={{ width: 108, marginInline: 16 }} />
 
       <div
-        css={[
-          flex({ direction: "x", align: "center" }),
-          {
-            backgroundColor: "var(--grey100)",
-            borderRadius: 10,
-            marginTop: 12,
-            marginInline: 16,
-            paddingLeft: 10,
-          },
-        ]}
+        className={clsx(
+          flex.x,
+          align.center,
+          bg.grey100,
+          round[12],
+          margin.top[12],
+          margin.x[12],
+          padding.left[8],
+        )}
       >
         <SearchIcon />
         <input
           value={search}
           onChange={e => setSearch(e.target.value)}
           ref={node => node?.focus()}
-          css={{
-            "flex": 1,
-            "paddingBlock": 10,
-            "paddingLeft": 6,
-            "paddingRight": 16,
-            "fontSize": 14,
-            "color": "var(--grey800)",
-            "::placeholder": {
-              color: "var(--grey400)",
-            },
-            "caretColor": "var(--blue500)",
+          style={{
+            flex: 1,
+            paddingBlock: 10,
+            paddingLeft: 6,
+            paddingRight: 16,
+            fontSize: 14,
+            color: "var(--grey800)",
+            // "::placeholder": {
+            //   color: "var(--grey400)",
+            // },
+            caretColor: "var(--blue500)",
           }}
           placeholder="원하는 이모지를 찾아보세요"
         />

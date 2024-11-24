@@ -27,6 +27,6 @@ export const emojiQuery = (emojiId: EmojiId) =>
   });
 
 // Schedule all tasks at low priorty
-tossEmojis.list.forEach(emoji =>
-  queryClient.prefetchQuery(emojiQuery(emoji.id)),
-);
+// tossEmojis.list.forEach(emoji =>
+//   queryClient.prefetchQuery(emojiQuery(emoji.id)),
+// );
