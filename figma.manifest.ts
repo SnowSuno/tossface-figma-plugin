@@ -7,6 +7,7 @@ export default defineManifest({
   main: "code.js",
   ui: "ui.html",
   editorType: ["figma", "figjam"],
+  documentAccess: "dynamic-page",
   networkAccess: {
     allowedDomains: [
       "https://cdn.jsdelivr.net",
