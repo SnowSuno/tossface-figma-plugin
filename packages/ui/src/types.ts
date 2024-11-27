@@ -6,11 +6,6 @@ import { Localized } from "@/common/locale";
  */
 export type EmojiId = Brand<string, "emojiId">;
 
-/**
- *
- */
-export type Unicode = Brand<string, "unicode">;
-
 export type Group =
   | "people"
   | "animals"
@@ -24,6 +19,7 @@ export type Group =
 
 export interface BaseTossEmoji {
   id: EmojiId;
+  unicode?: string; // TODO : Require after supporting custom unicodes
   label: Localized<string>;
   group: Group;
 }

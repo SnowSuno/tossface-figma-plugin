@@ -1,13 +1,17 @@
 import { tossEmojis } from "@/emojis";
 import { GroupMeta, groupsMeta } from "@/common/group";
 import { dismissPopup, EMOJI_SIZE, EmojiButton, EmojiIcon } from "./EmojiIcon";
-import { flex } from "@/styles/flex";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useVirtualizer, VirtualizerOptions } from "@tanstack/react-virtual";
+import React, { forwardRef, useCallback, useRef, useState } from "react";
+import {
+  useVirtualizer,
+  VirtualItem,
+  VirtualizerOptions,
+} from "@tanstack/react-virtual";
 import { chunk, memoize } from "es-toolkit";
 import { EmojiId, Group, TossEmoji } from "@/types";
 import { AnimatePresence, motion } from "framer-motion";
-import { css } from "@emotion/react";
+import clsx from "clsx";
+import { align, flex, pressable, w, wh } from "@/styles";
 
 // const rows = groupsMeta.flatMap(group => [
 //   { type: "header", data: group } as const,
@@ -52,14 +56,32 @@ export const GroupedEmojiList = React.memo(() => {
 
   const [currentGroup, setCurrentGroup] = useState(groupsMeta[0].key);
 
-  // const currentGroup = usePreservedReference(_currentGroup);
+  const groupButtonRefs = useRef<Partial<Record<Group, HTMLDivElement | null>>>(
+    {},
+  );
 
   const focusGroup = (group: Group) => {
-    // groupScrollerRef.current?.scrollTo({
-    //   left: 200,
-    //   behavior: "smooth",
-    // });
     setCurrentGroup(group);
+    const padding = 24;
+
+    const currentNode = groupButtonRefs.current[group];
+    const container = currentNode?.parentElement;
+    if (!currentNode || !container) return;
+
+    const nodeLeft = currentNode.offsetLeft - padding;
+    const nodeRight =
+      currentNode.offsetLeft + currentNode.offsetWidth + padding;
+    const containerLeft = container.scrollLeft;
+    const containerRight = containerLeft + container.clientWidth;
+
+    if (nodeLeft < containerLeft) {
+      container.scrollTo({ left: nodeLeft, behavior: "smooth" });
+    } else if (nodeRight > containerRight) {
+      container.scrollTo({
+        left: nodeRight - container.clientWidth,
+        behavior: "smooth",
+      });
+    }
   };
 
   const virtualizer = useVirtualizer({
@@ -79,25 +101,26 @@ export const GroupedEmojiList = React.memo(() => {
     },
   });
 
-  // const groupScrollerRef = useRef<HTMLDivElement>(null);
-
   return (
     <>
       <div
         // ref={groupScrollerRef}
-        css={[
-          flex({ direction: "x" }),
-          {
-            flexShrink: 0,
-            paddingTop: 6,
-            paddingInline: 16,
-            overflowX: "scroll",
-          },
-          { scrollbarWidth: "none", scrollBehavior: "smooth" },
-        ]}
+        className={clsx(flex.x)}
+        style={{
+          flexShrink: 0,
+          paddingTop: 6,
+          paddingInline: 12,
+          overflowX: "scroll",
+          scrollbarWidth: "none",
+          scrollBehavior: "smooth",
+          scrollPaddingInline: 36,
+        }}
       >
         {groupsMeta.map(group => (
           <GroupButton
+            ref={element => {
+              groupButtonRefs.current[group.key] = element;
+            }}
             key={group.key}
             icon={group.emoji}
             focused={currentGroup === group.key}
@@ -115,50 +138,48 @@ export const GroupedEmojiList = React.memo(() => {
       </div>
       <div
         ref={containerRef}
-        css={{ overflowY: "scroll", paddingInline: 16, zIndex: 10 }}
+        style={{ overflowY: "scroll", paddingInline: 16, zIndex: 10 }}
         onScroll={dismissPopup}
       >
         <div
-          css={{
+          className={clsx(w.full)}
+          style={{
             height: virtualizer.getTotalSize(),
-            width: "100%",
             position: "relative",
             marginBottom: 154,
           }}
         >
-          {virtualizer.getVirtualItems().map(({ index, key, size, start }) =>
-            rows[index].type === "header" ? (
-              <p
-                key={key}
-                css={{
-                  position: "absolute",
-                  top: start,
-                  left: 0,
-                  height: size,
-                  fontSize: 12,
-                  color: "var(--grey500)",
-                  paddingTop: 14,
-                  paddingInline: 2,
-                }}
-              >
-                {rows[index].data.name["ko"]}
-              </p>
-            ) : (
-              rows[index].data.map((emoji, lane) => (
-                <EmojiButton
-                  key={emoji.id}
-                  top={start}
-                  lane={lane}
-                  emoji={emoji}
-                />
-              ))
-            ),
-          )}
+          {virtualizer.getVirtualItems().map(({ key, ...props }) => (
+            <Row key={key} {...props} />
+          ))}
         </div>
       </div>
     </>
   );
 });
+
+const Row = React.memo(({ index, size, start }: Omit<VirtualItem, "key">) =>
+  rows[index].type === "header" ? (
+    <p
+      style={{
+        position: "absolute",
+        top: start,
+        left: 0,
+        height: size,
+        fontSize: 12,
+        color: "var(--grey500)",
+        paddingTop: 14,
+        paddingInline: 2,
+      }}
+    >
+      {rows[index].data.name["ko"]}
+    </p>
+  ) : (
+    rows[index].data.map((emoji, lane) => (
+      <EmojiButton key={emoji.id} top={start} lane={lane} emoji={emoji} />
+    ))
+  ),
+);
 
 interface GroupButtonProps {
   icon: EmojiId;
@@ -167,68 +188,55 @@ interface GroupButtonProps {
   onClick?: () => void;
 }
 
-const GroupButton = React.memo(function GroupButton({
-  icon,
-  children,
-  focused,
-  onClick,
-}: GroupButtonProps) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (focused) {
-      ref.current?.scrollIntoView({ behavior: "smooth", inline: "center" });
-    }
-  }, [focused]);
-
-  return (
-    <div ref={ref} css={{ position: "relative" }}>
-      <button
-        css={[
-          pressable,
-          flex({ direction: "x", align: "center", gap: 2 }),
-          {
+const GroupButton = React.memo(
+  forwardRef<HTMLDivElement, GroupButtonProps>(
+    ({ icon, children, focused, onClick }, ref) => (
+      <div ref={ref} style={{ position: "relative" }}>
+        <button
+          className={clsx(flex.x, align.center, pressable)}
+          style={{
+            gap: 2,
             paddingBlock: 8,
             paddingInline: 10,
             position: "relative",
             zIndex: 10,
             borderRadius: 10,
-          },
-        ]}
-        onClick={onClick}
-      >
-        <EmojiIcon emojiId={icon} size={16} />
-        <span css={{ whiteSpace: "nowrap" }}>{children}</span>
-      </button>
-      <AnimatePresence initial={false}>
-        {focused && (
-          <motion.div
-            layoutId="groupBtnBackground"
-            css={{
-              position: "absolute",
-              borderRadius: 10,
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              background: "var(--grey100)",
-              zIndex: 0,
-            }}
-          />
-        )}
-      </AnimatePresence>
-    </div>
-  );
-});
+          }}
+          onClick={onClick}
+        >
+          <EmojiIcon emojiId={icon} className={wh[16]} />
+          <span style={{ whiteSpace: "nowrap" }}>{children}</span>
+        </button>
+        <AnimatePresence initial={false}>
+          {focused && (
+            <motion.div
+              layoutId="groupBtnBackground"
+              style={{
+                position: "absolute",
+                borderRadius: 10,
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                background: "var(--grey100)",
+                zIndex: 0,
+              }}
+            />
+          )}
+        </AnimatePresence>
+      </div>
+    ),
+  ),
+);
 
-export const pressable = css({
-  ":hover": {
-    // opacity: 0.5,
-    backgroundColor: "var(--greyOpacity50)",
-  },
-  ":active": {
-    scale: 0.9,
-    // backgroundColor: "var(--grey300)",
-  },
-  "transition": "scale .1s ease, background .2s ease, opacity .2s ease",
-});
+// export const pressable = css({
+//   ":hover": {
+//     // opacity: 0.5,
+//     backgroundColor: "var(--greyOpacity50)",
+//   },
+//   ":active": {
+//     scale: 0.9,
+//     // backgroundColor: "var(--grey300)",
+//   },
+//   "transition": "scale .1s ease, background .2s ease, opacity .2s ease",
+// });

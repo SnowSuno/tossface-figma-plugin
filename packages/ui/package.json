@@ -7,11 +7,12 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
     "@tanstack/react-query": "^5.51.23",
     "@tanstack/react-virtual": "^3.10.6",
     "@toss/use-overlay": "^1.3.8",
     "@tossface-figma/common": "workspace:*",
+    "@vanilla-extract/css": "^1.16.0",
+    "clsx": "^2.1.1",
     "emoji-regex": "^10.3.0",
     "emojibase-data": "^15.3.2",
     "es-hangul": "^2.1.0",
@@ -25,7 +26,7 @@
   "devDependencies": {
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
-    "csstype": "^3.1.3",
+    "@vanilla-extract/vite-plugin": "^4.0.17",
     "emojibase": "^15.3.1",
     "ts-brand": "^0.1.0",
     "vite-plugin-compile-time": "^0.2.1"

@@ -278,7 +278,4 @@ const customEmojis = [
   // }),
 ];
 
-const a = ["a", "b", "c"];
-console.log(Object.fromEntries(a.map((item, index) => [item, index])));
-
 export const emojiSource = sortBy([...baseEmojis, ...customEmojis], [byGroup]);

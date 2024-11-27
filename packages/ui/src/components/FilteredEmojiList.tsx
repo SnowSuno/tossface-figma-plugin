@@ -2,8 +2,9 @@ import { tossEmojis } from "@/emojis";
 import { serializeSearchKeyword } from "@/utils/search";
 import React, { useDeferredValue, useMemo, useRef } from "react";
 import { dismissPopup, EMOJI_SIZE, EmojiButton } from "./EmojiIcon";
-import { flex } from "@/styles/flex";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import clsx from "clsx";
+import { align, flex, justify, margin, padding, w } from "@/styles";
 
 interface Props {
   search: string;
@@ -37,21 +38,20 @@ export const FilteredEmojiList = React.memo(({ search }: Props) => {
   return filteredEmojis.length > 0 ? (
     <div
       ref={containerRef}
-      css={{
+      className={clsx(padding.x[16])}
+      style={{
         zIndex: 10,
         overflowY: "scroll",
         overflowX: "visible",
-        paddingInline: 16,
+        flex: 1,
       }}
       onScroll={dismissPopup}
     >
       <div
-        css={{
+        className={clsx(w.full, margin.top[12], margin.bottom[24])}
+        style={{
           height: virtualizer.getTotalSize(),
           position: "relative",
-          width: "100%",
-          marginTop: 12,
-          marginBottom: 40,
         }}
       >
         {virtualizer.getVirtualItems().map(({ index, key, start, lane }) => {
@@ -68,10 +68,8 @@ export const FilteredEmojiList = React.memo(({ search }: Props) => {
     </div>
   ) : (
     <div
-      css={[
-        flex({ direction: "y", align: "center", justify: "center", gap: 8 }),
-        { flex: 1 },
-      ]}
+      className={clsx(flex.y, align.center, justify.center)}
+      style={{ gap: 8, flex: 1 }}
     >
       <svg
         width="40"
@@ -94,7 +92,7 @@ export const FilteredEmojiList = React.memo(({ search }: Props) => {
         />
       </svg>
       <p
-        css={{
+        style={{
           fontWeight: 500,
           color: "var(--grey700)",
           fontSize: 16,
@@ -104,7 +102,7 @@ export const FilteredEmojiList = React.memo(({ search }: Props) => {
         이모지를 찾을 수 없어요
       </p>
       <p
-        css={{
+        style={{
           fontWeight: 400,
           color: "var(--grey500)",
           fontSize: 13,
