@@ -34,7 +34,7 @@ export const customEmoji = ({
   group,
 });
 
-const skinTones = [
+const skinToneMeta = [
   {
     id: "u1F3FB",
     label: { ko: "하얀 피부", en: "light skin tone" },
@@ -60,8 +60,9 @@ const skinTones = [
 export const appendCustomSkinTone = (emoji: TossEmoji) => {
   if (emoji.skins && emoji.skins.length > 0) return;
 
-  emoji.skins = skinTones.map(skinTone => ({
+  emoji.skins = skinToneMeta.map(skinTone => ({
     id: [emoji.id, skinTone.id].join("_") as EmojiId,
+    unicode: emoji.unicode, // TODO : Append skinTone
     label: mapValues(emoji.label, (value, locale) =>
       [value, skinTone.label[locale]].join(": "),
     ),

@@ -56,20 +56,21 @@ export const GroupedEmojiList = React.memo(() => {
 
   const [currentGroup, setCurrentGroup] = useState(groupsMeta[0].key);
 
-  // const currentGroup = usePreservedReference(_currentGroup);
   const groupButtonRefs = useRef<Partial<Record<Group, HTMLDivElement | null>>>(
     {},
   );
 
   const focusGroup = (group: Group) => {
     setCurrentGroup(group);
+    const padding = 24;
 
     const currentNode = groupButtonRefs.current[group];
     const container = currentNode?.parentElement;
     if (!currentNode || !container) return;
 
-    const nodeLeft = currentNode.offsetLeft - 10;
-    const nodeRight = nodeLeft + currentNode.offsetWidth + 20;
+    const nodeLeft = currentNode.offsetLeft - padding;
+    const nodeRight =
+      currentNode.offsetLeft + currentNode.offsetWidth + padding;
     const containerLeft = container.scrollLeft;
     const containerRight = containerLeft + container.clientWidth;
 
@@ -81,11 +82,6 @@ export const GroupedEmojiList = React.memo(() => {
         behavior: "smooth",
       });
     }
-
-    // groupScrollerRef.current?.scrollTo({
-    //   left: 200,
-    //   behavior: "smooth",
-    // });
   };
 
   const virtualizer = useVirtualizer({
@@ -153,8 +149,8 @@ export const GroupedEmojiList = React.memo(() => {
             marginBottom: 154,
           }}
         >
-          {virtualizer.getVirtualItems().map(props => (
-            <Row {...props} />
+          {virtualizer.getVirtualItems().map(({ key, ...props }) => (
+            <Row key={key} {...props} />
           ))}
         </div>
       </div>
@@ -162,10 +158,9 @@ export const GroupedEmojiList = React.memo(() => {
   );
 });
 
-const Row = React.memo(({ index, key, size, start }: VirtualItem) =>
+const Row = React.memo(({ index, size, start }: Omit<VirtualItem, "key">) =>
   rows[index].type === "header" ? (
     <p
-      key={key}
       style={{
         position: "absolute",
         top: start,
@@ -195,53 +190,42 @@ interface GroupButtonProps {
 
 const GroupButton = React.memo(
   forwardRef<HTMLDivElement, GroupButtonProps>(
-    ({ icon, children, focused, onClick }, ref) => {
-      // const ref = useRef<HTMLDivElement>(null);
-      //
-      // useLayoutEffect(() => {
-      //   if (focused) {
-      //     ref.current?.scrollIntoView({ inline: "nearest", behavior: "smooth" });
-      //     console.log("scroll", children);
-      //   }
-      // }, [focused]);
-
-      return (
-        <div ref={ref} style={{ position: "relative" }}>
-          <button
-            className={clsx(flex.x, align.center, pressable)}
-            style={{
-              gap: 2,
-              paddingBlock: 8,
-              paddingInline: 10,
-              position: "relative",
-              zIndex: 10,
-              borderRadius: 10,
-            }}
-            onClick={onClick}
-          >
-            <EmojiIcon emojiId={icon} className={wh[16]} />
-            <span style={{ whiteSpace: "nowrap" }}>{children}</span>
-          </button>
-          <AnimatePresence initial={false}>
-            {focused && (
-              <motion.div
-                layoutId="groupBtnBackground"
-                style={{
-                  position: "absolute",
-                  borderRadius: 10,
-                  top: 0,
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  background: "var(--grey100)",
-                  zIndex: 0,
-                }}
-              />
-            )}
-          </AnimatePresence>
-        </div>
-      );
-    },
+    ({ icon, children, focused, onClick }, ref) => (
+      <div ref={ref} style={{ position: "relative" }}>
+        <button
+          className={clsx(flex.x, align.center, pressable)}
+          style={{
+            gap: 2,
+            paddingBlock: 8,
+            paddingInline: 10,
+            position: "relative",
+            zIndex: 10,
+            borderRadius: 10,
+          }}
+          onClick={onClick}
+        >
+          <EmojiIcon emojiId={icon} className={wh[16]} />
+          <span style={{ whiteSpace: "nowrap" }}>{children}</span>
+        </button>
+        <AnimatePresence initial={false}>
+          {focused && (
+            <motion.div
+              layoutId="groupBtnBackground"
+              style={{
+                position: "absolute",
+                borderRadius: 10,
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                background: "var(--grey100)",
+                zIndex: 0,
+              }}
+            />
+          )}
+        </AnimatePresence>
+      </div>
+    ),
   ),
 );
 

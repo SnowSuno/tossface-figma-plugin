@@ -43,11 +43,12 @@ export const FilteredEmojiList = React.memo(({ search }: Props) => {
         zIndex: 10,
         overflowY: "scroll",
         overflowX: "visible",
+        flex: 1,
       }}
       onScroll={dismissPopup}
     >
       <div
-        className={clsx(w.full, margin.top[12], margin.bottom[40])}
+        className={clsx(w.full, margin.top[12], margin.bottom[24])}
         style={{
           height: virtualizer.getTotalSize(),
           position: "relative",

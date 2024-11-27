@@ -1,6 +1,7 @@
 import { emojiQuery } from "@/api/emoji";
 import { BaseTossEmoji } from "@/types";
 import { useQueryClient } from "@tanstack/react-query";
+import { compact } from "es-toolkit";
 
 export function useInsertEmoji() {
   const queryClient = useQueryClient();
@@ -13,7 +14,10 @@ export function useInsertEmoji() {
         pluginMessage: {
           type: "create",
           emojis: [
-            { name: `${emoji.unicode} ${emoji.label.ko}`, source: emojiData },
+            {
+              name: compact([emoji.unicode, emoji.label.ko]).join(" "),
+              source: emojiData,
+            },
           ],
         },
         pluginId: "*",

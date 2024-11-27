@@ -1,8 +1,4 @@
-import {
-  createGlobalTheme,
-  createTheme,
-  createThemeContract,
-} from "@vanilla-extract/css";
+import { createGlobalTheme } from "@vanilla-extract/css";
 
 const colors = createGlobalTheme(":root", {
   grey50: "#f9fafb",
@@ -39,39 +35,39 @@ const colors = createGlobalTheme(":root", {
   greyOpacity900: "rgba(2, 9, 19, 0.91)",
 });
 
-createGlobalTheme(".figma-dark", {
-  grey50: "#f9fafb",
-  grey100: "#f2f4f6",
-  grey200: "#e5e8eb",
-  grey300: "#d1d6db",
-  grey400: "#b0b8c1",
-  grey500: "#8b95a1",
-  grey600: "#6b7684",
-  grey700: "#4e5968",
-  grey800: "#333d4b",
-  grey900: "#191f28",
-  white: "#fff",
-  blue50: "#e8f3ff",
-  blue100: "#c9e2ff",
-  blue200: "#90c2ff",
-  blue300: "#64a8ff",
-  blue400: "#4593fc",
-  blue500: "#3182f6",
-  blue600: "#2272eb",
-  blue700: "#1b64da",
-  blue800: "#1957c2",
-  blue900: "#194aa6",
-
-  greyOpacity50: "rgba(0, 23, 51, 0.02)",
-  greyOpacity100: "rgba(2, 32, 71, 0.05)",
-  greyOpacity200: "rgba(0, 27, 55, 0.1)",
-  greyOpacity300: "rgba(0, 29, 58, 0.18)",
-  greyOpacity400: "rgba(0, 25, 54, 0.31)",
-  greyOpacity500: "rgba(3, 24, 50, 0.46)",
-  greyOpacity600: "rgba(0, 19, 43, 0.58)",
-  greyOpacity700: "rgba(3, 18, 40, 0.7)",
-  greyOpacity800: "rgba(0, 12, 30, 0.8)",
-  greyOpacity900: "rgba(2, 9, 19, 0.91)",
-});
+// createGlobalTheme(".figma-dark", {
+//   grey50: "#f9fafb",
+//   grey100: "#f2f4f6",
+//   grey200: "#e5e8eb",
+//   grey300: "#d1d6db",
+//   grey400: "#b0b8c1",
+//   grey500: "#8b95a1",
+//   grey600: "#6b7684",
+//   grey700: "#4e5968",
+//   grey800: "#333d4b",
+//   grey900: "#191f28",
+//   white: "#fff",
+//   blue50: "#e8f3ff",
+//   blue100: "#c9e2ff",
+//   blue200: "#90c2ff",
+//   blue300: "#64a8ff",
+//   blue400: "#4593fc",
+//   blue500: "#3182f6",
+//   blue600: "#2272eb",
+//   blue700: "#1b64da",
+//   blue800: "#1957c2",
+//   blue900: "#194aa6",
+//
+//   greyOpacity50: "rgba(0, 23, 51, 0.02)",
+//   greyOpacity100: "rgba(2, 32, 71, 0.05)",
+//   greyOpacity200: "rgba(0, 27, 55, 0.1)",
+//   greyOpacity300: "rgba(0, 29, 58, 0.18)",
+//   greyOpacity400: "rgba(0, 25, 54, 0.31)",
+//   greyOpacity500: "rgba(3, 24, 50, 0.46)",
+//   greyOpacity600: "rgba(0, 19, 43, 0.58)",
+//   greyOpacity700: "rgba(3, 18, 40, 0.7)",
+//   greyOpacity800: "rgba(0, 12, 30, 0.8)",
+//   greyOpacity900: "rgba(2, 9, 19, 0.91)",
+// });
 
 export { colors };

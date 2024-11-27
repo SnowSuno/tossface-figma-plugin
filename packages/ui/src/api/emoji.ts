@@ -1,10 +1,8 @@
 import ky from "ky";
 import { EmojiId } from "@/types";
 import { queryOptions } from "@tanstack/react-query";
-import { createStackPool } from "@/utils/pool";
+// import { createStackPool } from "@/utils/pool";
 import { memoize } from "es-toolkit";
-import { tossEmojis } from "@/emojis";
-import { queryClient } from "@/query";
 
 const fetchEmoji = memoize((emojiId: EmojiId) =>
   ky
@@ -15,12 +13,13 @@ const fetchEmoji = memoize((emojiId: EmojiId) =>
     .text(),
 );
 
-const apiPool = createStackPool({ concurrency: 200 });
+// const apiPool = createStackPool({ concurrency: 200 });
 
 export const emojiQuery = (emojiId: EmojiId) =>
   queryOptions({
     queryKey: ["emoji", emojiId],
-    queryFn: () => apiPool.run(() => fetchEmoji(emojiId)),
+    queryFn: () => fetchEmoji(emojiId),
+    // queryFn: () => apiPool.run(() => fetchEmoji(emojiId)),
     staleTime: Infinity,
     gcTime: Infinity,
     refetchOnMount: false,

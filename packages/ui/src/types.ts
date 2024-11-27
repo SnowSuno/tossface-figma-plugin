@@ -19,7 +19,7 @@ export type Group =
 
 export interface BaseTossEmoji {
   id: EmojiId;
-  unicode: string;
+  unicode?: string; // TODO : Require after supporting custom unicodes
   label: Localized<string>;
   group: Group;
 }
