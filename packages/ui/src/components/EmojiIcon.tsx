@@ -53,7 +53,7 @@ export const EmojiButton = React.memo(
     const { insertEmoji } = useInsertEmoji();
     const [popupOpen, setPopupOpen] = useState(false);
 
-    const childNumber = (emoji.skins?.length ?? 0) + 1;
+    const childNumber = Math.min((emoji.skins?.length ?? 0) + 1, LANES);
 
     const x = lane * EMOJI_SIZE;
 
@@ -98,7 +98,8 @@ export const EmojiButton = React.memo(
         className={clsx(flex.x, bg.white, round[12])}
         style={{
           position: "absolute",
-          overflow: "hidden",
+          overflowX: "auto",
+          scrollbarWidth: "none",
         }}
       >
         <AnimatePresence>
