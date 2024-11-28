@@ -9,6 +9,11 @@ export interface GroupMeta {
 
 export const groupsMeta: GroupMeta[] = [
   {
+    key: "custom",
+    emoji: "uE11E" as EmojiId,
+    name: { ko: "토스", en: "" },
+  },
+  {
     key: "people",
     emoji: "u1F600" as EmojiId,
     name: { ko: "얼굴 및 사람", en: "Smileys & People" },
@@ -47,11 +52,6 @@ export const groupsMeta: GroupMeta[] = [
     key: "flags",
     emoji: "u1F3F3" as EmojiId,
     name: { ko: "깃발", en: "Flags" },
-  },
-  {
-    key: "custom",
-    emoji: "asterisk" as EmojiId,
-    name: { ko: "기타", en: "" },
   },
 ];
 
